@@ -1,5 +1,9 @@
+using Presentation.MiddleWares;
+using Presentation.ServiceExtensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.ServicesCollection();
 
 builder.Services.AddControllers();
 
@@ -18,6 +22,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<GlobalExceptionMiddleWare>();
 
 app.MapControllers();
 
