@@ -8,16 +8,15 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public class Location
+    public class PaymentStatus
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
         public string Name { get; set; } = null!;
-        public string Place {  get; set; } = null!;
-        public Guid EmployeeAddedId {  get; set; }
+        public Guid EmployeeAddedId { get; set; }
     }
-    public class LocationConfigration : IEntityTypeConfiguration<Location>
+    public class PaymentStatusConfigration : IEntityTypeConfiguration<PaymentStatus>
     {
-        public void Configure(EntityTypeBuilder<Location> builder)
+        public void Configure(EntityTypeBuilder<PaymentStatus> builder)
         {
 
 

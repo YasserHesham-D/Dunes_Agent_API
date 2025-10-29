@@ -8,30 +8,23 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public class Service
+    public class Driver
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-
-        public DateTime Duration { get; set; }
-        public DateTime EntryDate { get; set; }
-        
         public string Name { get; set; } = null!;
-        public string? Description { get; set; } = null;
-        public string? Type { get; set; } = null;
-
+        public string phoneNumber { get; set; } = null!;
+        public string CarNumber { get; set; } = null!;
+        public string PlaceOfWork { get; set; } = null!;
+        public DateTime DateOfAdd { get; set; }= DateTime.Now;
         public Guid EmployeeAddedId { get; set; }
-        public Employee Employee {  get; set; }= null!;
-
-
 
     }
-    public class ServiceConfigration : IEntityTypeConfiguration<Service>
+    public class DriverConfigration : IEntityTypeConfiguration<Driver>
     {
-        public void Configure(EntityTypeBuilder<Service> builder)
+        public void Configure(EntityTypeBuilder<Driver> builder)
         {
 
 
         }
     }
-
 }
