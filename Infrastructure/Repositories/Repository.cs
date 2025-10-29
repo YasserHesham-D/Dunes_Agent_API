@@ -21,6 +21,11 @@ namespace Infrastructure.Repository
             _dbSet = context.Set<T>();
         }
 
+        public AppDbContext GetContext()
+        {
+            return _context;
+        }
+        
         // GET BY ID
         public virtual async Task<T> GetByIdAsync(Guid id)
         {
@@ -81,7 +86,6 @@ namespace Infrastructure.Repository
         public virtual async Task<T> AddAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -89,14 +93,12 @@ namespace Infrastructure.Repository
         public virtual async Task AddRangeAsync(IEnumerable<T> entities)
         {
             await _dbSet.AddRangeAsync(entities);
-            await _context.SaveChangesAsync();
         }
 
         // UPDATE
         public virtual async Task UpdateAsync(T entity)
         {
             _dbSet.Update(entity);
-            await _context.SaveChangesAsync();
         }
 
         // PATCH 
@@ -112,7 +114,6 @@ namespace Infrastructure.Repository
 
             // Mark as modified
             _context.Entry(entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
 
             return entity;
         }
@@ -124,7 +125,6 @@ namespace Infrastructure.Repository
             if (entity != null)
             {
                 _dbSet.Remove(entity);
-                await _context.SaveChangesAsync();
             }
         }
 
@@ -132,7 +132,6 @@ namespace Infrastructure.Repository
         public virtual async Task DeleteAsync(T entity)
         {
             _dbSet.Remove(entity);
-            await _context.SaveChangesAsync();
         }
 
 
