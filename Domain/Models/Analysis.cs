@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +15,13 @@ namespace Domain.Models
         public decimal TotalIncome { get; set; }
         public decimal TotalOutcome { get; set; }
         public DateTime LastUpdateDate { get; set; }
+    }
+    public class AnalysisConfigration : IEntityTypeConfiguration<Analysis>
+    {
+        public void Configure(EntityTypeBuilder<Analysis> builder)
+        {
+
+
+        }
     }
 }

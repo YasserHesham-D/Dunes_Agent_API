@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +21,18 @@ namespace Domain.Models
 
         public DateTime PickUpDate { get; set; }
         public bool IsConfirmed { get; set; }
+
+        public Guid DriverId { get; set; }
         public string? DriverName { get; set; }
+
+        public Guid HotelId { get; set; }
+        public Guid CurrencyId { get; set; }
+        public Guid PaymentMethodId { get; set; }
+        public Guid PaymentStatusId { get; set; }
+        public Guid EmployeeAddedId { get; set; }
+        public int TicketNumber { get; set; }
+
+
         public string? Notes { get; set; }
 
 
@@ -32,5 +45,13 @@ namespace Domain.Models
 
 
 
+    }
+    public class BookingConfigration : IEntityTypeConfiguration<Booking>
+    {
+        public void Configure(EntityTypeBuilder<Booking> builder)
+        {
+
+
+        }
     }
 }

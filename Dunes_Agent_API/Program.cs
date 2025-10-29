@@ -1,7 +1,10 @@
 using Presentation.MiddleWares;
 using Presentation.ServiceExtensions;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSerilog();
 
 builder.Services.ServicesCollection();
 
