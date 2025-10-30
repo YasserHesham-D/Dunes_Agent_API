@@ -11,6 +11,14 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
+    public class RoleConstants
+    {
+        public const string TourAgent = "TourAgent";
+        public const string DiscAgent = "DiscAgent";
+        public const string OperationManager = "OperationManager";
+        public const string Admin = "Admin";
+
+    }
     public class Employee : IdentityUser
     {
         public string FullName { get; set; } = null!;
