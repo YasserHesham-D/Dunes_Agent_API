@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using Domain.Models.MTM;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.DBContext
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<Employee>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -20,7 +21,6 @@ namespace Infrastructure.DBContext
         public DbSet<Booking>Bookings { get; set; }
         public DbSet<Currency> Currencies { get; set; }
         public DbSet<Driver> Drivers { get; set; }
-        public DbSet<Employee> Employees { get; set; }
         public DbSet<History> Histories { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Location> Locations { get; set; }
