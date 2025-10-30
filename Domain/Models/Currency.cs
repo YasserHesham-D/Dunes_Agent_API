@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Models.MTM;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,18 @@ namespace Domain.Models
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; } = null!;
         public Guid EmployeeAddedId { get; set; }
+
+        public virtual Employee Employee { get; set; } = null!;
+
+        public ICollection<CurrencyValues> CurrenciesFrom { get; set; } = null!;
+
+        public ICollection<CurrencyValues> CurrenciesTo { get; set; } = null!;
+
+        public ICollection<Operation> Operations { get; set; } = null!;
+
+        public ICollection<ReciptVoucher>? Vouchers { get; set; }
+
+        public ICollection<Booking>? Bookings { get; set; }
 
 
     }

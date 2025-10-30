@@ -15,8 +15,12 @@ namespace Domain.Models
         public string phoneNumber { get; set; } = null!;
         public string CarNumber { get; set; } = null!;
         public string PlaceOfWork { get; set; } = null!;
-        public DateTime DateOfAdd { get; set; }= DateTime.Now;
+        public DateTime DateOfAdd { get; set; }= DateTime.UtcNow;
         public Guid EmployeeAddedId { get; set; }
+
+        public virtual Employee Employee { get; set; } = null!;
+
+        public ICollection<Booking>? Bookings { get; set; }
 
     }
     public class DriverConfigration : IEntityTypeConfiguration<Driver>

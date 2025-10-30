@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Models.MTM;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,18 @@ namespace Domain.Models
         public string Name { get; set; } = null!;
         public string Place {  get; set; } = null!;
         public Guid EmployeeAddedId {  get; set; }
+
+        public virtual Employee Employee { get; set; } = null!;
+
+        public ICollection<LocationServices> Services { get; set; } = null!;
+
+        public ICollection<BookingServices> BookingServices { get; set; } = null!;
+
+        public ICollection<ReciptVoucherServices> VoucherServices { get; set; } = null!;
+
+        public ICollection<Employee>? EmployeesBelong { get; set; }
+
+
     }
     public class LocationConfigration : IEntityTypeConfiguration<Location>
     {

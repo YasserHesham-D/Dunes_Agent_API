@@ -19,7 +19,9 @@ namespace Domain.Models
         public bool IsRead { get; set; }
 
         public string Message { get; set; } = null! ;
+
         public Guid EmployeeId { get; set; }
+        public virtual Employee Employee { get; set; } = null!;
     }
     public class NotificationConfigration : IEntityTypeConfiguration<Notification>
     {

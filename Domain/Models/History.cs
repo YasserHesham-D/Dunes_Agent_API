@@ -12,8 +12,10 @@ namespace Domain.Models
     {
         public Guid Id { get; set; }=Guid.NewGuid();
         public string OperationName { get; set; } = null!;
-        public DateTime Date {  get; set; }
+        public DateTime Date {  get; set; } = DateTime.UtcNow; 
         public Guid EmployeeId { get; set; }
+
+        public virtual Employee Employee { get; set; } = null!;
 
     }
     public class HistoryConfigration : IEntityTypeConfiguration<History>

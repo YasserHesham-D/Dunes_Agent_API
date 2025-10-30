@@ -14,6 +14,14 @@ namespace Domain.Models
         public string Name { get; set; } = null!;
         public Guid EmployeeAddedId { get; set; }
 
+        public virtual Employee Employee { get; set; } = null!;
+
+        public ICollection<Operation>? Operations { get; set; }
+
+        public ICollection<ReciptVoucher>? Vouchers { get; set; }
+
+        public ICollection<Booking>? Bookings { get; set; }
+
 
     }
     public class PaymentMethodConfigration : IEntityTypeConfiguration<PaymentMethod>

@@ -13,8 +13,14 @@ namespace Domain.Models
         public Guid Id { get; set; } =Guid.NewGuid();
         public string Name { get; set; } = null!;
         public string Place { get; set; } = null!;
-        public DateTime EntryDate { get; set; } = DateTime.Now;
+        public DateTime EntryDate { get; set; } = DateTime.UtcNow;
         public Guid EmployeeAddedId {  get; set; }
+
+        public virtual Employee Employee { get; set; } = null!;
+
+        public ICollection<Booking> Bookings { get; set; } = null!;
+
+        public ICollection<Employee>? EmployeesBelong {  get; set; } 
 
     }
     public class HotelConfigration : IEntityTypeConfiguration<Hotel>
