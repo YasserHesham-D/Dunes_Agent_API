@@ -23,7 +23,7 @@ namespace Domain.Models
         public bool IsConfirmed { get; set; }
       
         public string GuestName { get; set; } = null!;
-        public decimal TotalPrice { get; set; }
+        public decimal TotalPrice { get; set; } = 0;
 
         public Guid CurrencyId { get; set; }
 
@@ -44,6 +44,66 @@ namespace Domain.Models
         public void Configure(EntityTypeBuilder<ReciptVoucher> builder)
         {
 
+            builder.ToTable("ReciptVouchers");
+
+            // Primary Key
+            builder.HasKey(e => e.Id);
+
+            // Properties
+            builder.Property(e => e.GuestName)
+                .IsRequired()
+                .HasMaxLength(150);
+
+            builder.Property(e => e.IsConfirmed)
+               .HasDefaultValue(false);
+
+
+            builder.Property(e => e.Room)
+                .HasMaxLength(20);
+
+            builder.Property(e => e.TotalPrice)
+               .IsRequired()
+               .HasDefaultValue(0);
+
+            builder.Property(e => e.Notes)
+               .IsRequired()
+               .HasMaxLength(500);
+
+            builder.Property(e => e.Date)
+                .IsRequired();
+
+
+          
+
+
+
+            // Relationships --------------------------------
+
+            // Self reference: EmployeeAdded -> EmployeesAdded
+            builder.HasOne(e => e.Employee)
+                .WithMany(e => e.Vouchers)
+                .HasForeignKey(e => e.EmployeeAddedId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(e => e.Currency)
+               .WithMany(e => e.Vouchers)
+               .HasForeignKey(e => e.CurrencyId)
+               .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(e => e.PaymentMethod)
+              .WithMany(e => e.Vouchers)
+              .HasForeignKey(e => e.PaymentMethodId)
+              .OnDelete(DeleteBehavior.NoAction);
+
+
+
+
+
+            // Collections
+            builder.HasMany(e => e.Services)
+                .WithOne(h => h.Voucher)
+                .HasForeignKey(h => h.ReciptVoucherId)
+                .OnDelete(DeleteBehavior.NoAction);
 
         }
     }

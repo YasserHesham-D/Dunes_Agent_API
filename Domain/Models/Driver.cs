@@ -12,7 +12,7 @@ namespace Domain.Models
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; } = null!;
-        public string phoneNumber { get; set; } = null!;
+        public string PhoneNumber { get; set; } = null!;
         public string CarNumber { get; set; } = null!;
         public string PlaceOfWork { get; set; } = null!;
         public DateTime DateOfAdd { get; set; }= DateTime.UtcNow;
@@ -27,7 +27,22 @@ namespace Domain.Models
     {
         public void Configure(EntityTypeBuilder<Driver> builder)
         {
+            builder.ToTable("Drivers");
 
+            builder.HasKey(x => x.Id);
+
+            builder.Property(e => e.Name).HasColumnType("NVARCHAR(100)").HasMaxLength(100);
+
+            builder.Property(e => e.PhoneNumber).HasColumnType("NVARCHAR(20)").HasMaxLength(20);
+
+            builder.Property(e => e.CarNumber).HasColumnType("NVARCHAR(20)").HasMaxLength(20);
+
+            builder.Property(e => e.PlaceOfWork).HasColumnType("NVARCHAR(50)").HasMaxLength(50);
+
+            builder.HasOne(e => e.Employee)
+             .WithMany(e => e.DriversAdded)
+             .HasForeignKey(e => e.EmployeeAddedId)
+             .OnDelete(DeleteBehavior.NoAction);
 
         }
     }

@@ -67,7 +67,113 @@ namespace Domain.Models
         public void Configure(EntityTypeBuilder<Booking> builder)
         {
 
+            builder.ToTable("Bookings");
 
+            // Primary Key
+            builder.HasKey(b => b.Id);
+
+            // Indexes (Optional but Recommended)
+            builder.HasIndex(b => b.OrderNumber).IsUnique(false);
+            builder.HasIndex(b => b.TicketNumber).IsUnique(false);
+            builder.HasIndex(b => b.PhoneNumber);
+
+            // Property Configurations
+            builder.Property(b => b.PhoneNumber)
+                .IsRequired()
+                .HasMaxLength(20);
+
+            builder.Property(b => b.GuestName)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder.Property(b => b.Room)
+                .HasMaxLength(50);
+
+            builder.Property(b => b.PickUpStatus)
+                .HasMaxLength(50);
+
+            builder.Property(b => b.TicketNumber)
+                .HasMaxLength(50);
+
+            builder.Property(b => b.OrderNumber)
+                .HasMaxLength(50);
+
+            builder.Property(b => b.Notes)
+                .HasMaxLength(500);
+
+            // Decimal Precision for Currency Values
+            builder.Property(b => b.VATPercentage)
+                .HasColumnType("decimal(5,2)")
+                .HasDefaultValue(0);
+
+            builder.Property(b => b.TotalPriceBeforeDiscount)
+                .HasColumnType("decimal(18,2)")
+                .HasDefaultValue(0);
+
+            builder.Property(b => b.NetProfit)
+                .HasColumnType("decimal(18,2)")
+                .HasDefaultValue(0);
+
+            builder.Property(b => b.TotalPriceAfterDiscount)
+                .HasColumnType("decimal(18,2)")
+                .HasDefaultValue(0);
+
+            builder.Property(b => b.DiscountPercentage)
+                .HasColumnType("decimal(5,2)")
+                .HasDefaultValue(0);
+
+            builder.Property(b => b.IsConfirmed)
+                .HasDefaultValue(false);
+
+            builder.Property(b => b.BookingDate)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            builder.Property(b => b.PickUpDate)
+                .IsRequired();
+
+            // Relationships ------------------------------------
+
+            // Booking → Driver (many-to-one)
+            builder.HasOne(b => b.Driver)
+                .WithMany(d => d.Bookings)
+                .HasForeignKey(b => b.DriverId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Booking → Hotel (many-to-one)
+            builder.HasOne(b => b.Hotel)
+                .WithMany(h => h.Bookings)
+                .HasForeignKey(b => b.HotelId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Booking → Currency (many-to-one)
+            builder.HasOne(b => b.Currency)
+                .WithMany(c => c.Bookings)
+                .HasForeignKey(b => b.CurrencyId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Booking → PaymentMethod (many-to-one)
+            builder.HasOne(b => b.PaymentMethod)
+                .WithMany(pm => pm.Bookings)
+                .HasForeignKey(b => b.PaymentMethodId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Booking → PaymentStatus (many-to-one)
+            builder.HasOne(b => b.PaymentStatus)
+                .WithMany(ps => ps.Bookings)
+                .HasForeignKey(b => b.PaymentStatusId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Booking → Employee (many-to-one)
+            builder.HasOne(b => b.Employee)
+                .WithMany(e => e.Bookings)
+                .HasForeignKey(b => b.EmployeeAddedId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Booking → BookingServices (many-to-many)
+            builder.HasMany(b => b.Services)
+                .WithOne(bs => bs.Booking)
+                .HasForeignKey(bs => bs.BookingId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

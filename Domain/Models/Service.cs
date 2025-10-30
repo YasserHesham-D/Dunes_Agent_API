@@ -1,4 +1,5 @@
-﻿using Domain.Models.MTM;
+﻿using Domain.Enums;
+using Domain.Models.MTM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -13,7 +14,9 @@ namespace Domain.Models
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        public DateTime Duration { get; set; }
+        public int Duration { get; set; } 
+
+        public TimeDuration TimeDuration { get; set; }
         public DateTime EntryDate { get; set; } = DateTime.UtcNow;
         
         public string Name { get; set; } = null!;
@@ -36,8 +39,67 @@ namespace Domain.Models
     {
         public void Configure(EntityTypeBuilder<Service> builder)
         {
+            builder.ToTable("Services");
+
+            // Primary Key
+            builder.HasKey(e => e.Id);
+
+            // Properties
+            builder.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(150);
+
+            builder.Property(e => e.Duration)
+                .IsRequired();
+
+            builder.Property(e => e.Type)
+               .IsRequired()
+               .HasMaxLength(100);
+
+            builder.Property(e => e.Description)
+               .IsRequired()
+               .HasMaxLength(300);
+
+            builder.Property(e => e.EntryDate)
+                .IsRequired();
+
+          
+            builder.Property(e => e.TimeDuration)
+                .HasConversion<int>() // store enum as int
+                .IsRequired();
 
 
+
+            // Relationships --------------------------------
+
+            // Self reference: EmployeeAdded -> EmployeesAdded
+            builder.HasOne(e => e.Employee)
+                .WithMany(e => e.ServicesAdded)
+                .HasForeignKey(e => e.EmployeeAddedId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            
+
+           
+
+            // Collections
+            builder.HasMany(e => e.Services)
+                .WithOne(h => h.Service)
+                .HasForeignKey(h => h.ServiceId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(e => e.BookingServices)
+                .WithOne(l => l.Service)
+                .HasForeignKey(l => l.ServiceId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(e => e.VoucherServices)
+                .WithOne(s => s.Service)
+                .HasForeignKey(s => s.ServiceId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            
+               
         }
     }
 

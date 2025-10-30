@@ -22,7 +22,16 @@ namespace Domain.Models
     {
         public void Configure(EntityTypeBuilder<History> builder)
         {
+            builder.ToTable("History");
 
+            builder.HasKey(x => x.Id);
+
+            builder.Property(e => e.OperationName).HasColumnType("NVARCHAR(100)").HasMaxLength(100);
+
+            builder.HasOne(e => e.Employee)
+             .WithMany(e => e.History)
+             .HasForeignKey(e => e.EmployeeId)
+             .OnDelete(DeleteBehavior.NoAction);
 
         }
     }

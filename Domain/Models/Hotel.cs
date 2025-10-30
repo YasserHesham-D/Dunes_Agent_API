@@ -28,6 +28,30 @@ namespace Domain.Models
         public void Configure(EntityTypeBuilder<Hotel> builder)
         {
 
+            builder.ToTable("Hotels");
+
+            builder.HasKey(x => x.Id);
+
+            builder.Property(e => e.Name).HasColumnType("NVARCHAR(100)").HasMaxLength(100);
+
+            builder.Property(e => e.Place).HasColumnType("NVARCHAR(300)").HasMaxLength(300);
+
+            builder.HasOne(e => e.Employee)
+              .WithMany(e => e.HotelsAdded)
+              .HasForeignKey(e => e.EmployeeAddedId)
+              .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(e => e.Bookings)
+                .WithOne(v => v.Hotel)
+                .HasForeignKey(v => v.HotelId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(e => e.EmployeesBelong)
+                .WithOne(b => b.Hotel)
+                .HasForeignKey(b => b.HotelId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            
 
         }
     }

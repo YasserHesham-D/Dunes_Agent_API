@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using Domain.Models.MTM;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,16 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.DBContext
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<Employee>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
         }
 
         public DbSet<Analysis> Analyses { get; set; }

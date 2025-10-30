@@ -23,6 +23,25 @@ namespace Domain.Models
         public void Configure(EntityTypeBuilder<PaymentStatus> builder)
         {
 
+            builder.ToTable("PaymentStatuses");
+
+            // Primary Key
+            builder.HasKey(e => e.Id);
+
+            // Properties
+            builder.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(150);
+
+            builder.HasOne(e => e.Employee)
+                .WithMany(e => e.PaymentStatusAdded)
+                .HasForeignKey(e => e.EmployeeAddedId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(e => e.Bookings)
+              .WithOne(b => b.PaymentStatus)
+              .HasForeignKey(b => b.PaymentStatusId)
+              .OnDelete(DeleteBehavior.NoAction);
 
         }
     }

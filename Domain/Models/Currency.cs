@@ -33,7 +33,41 @@ namespace Domain.Models
     {
         public void Configure(EntityTypeBuilder<Currency> builder)
         {
+            builder.ToTable("Currencies");
 
+            builder.HasKey(x => x.Id);
+
+            builder.Property(e => e.Name).HasColumnType("NVARCHAR(50)").HasMaxLength(50);
+
+            builder.HasOne(e => e.Employee)
+            .WithMany(e => e.CurrenciesAdded)
+            .HasForeignKey(e => e.EmployeeAddedId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(e => e.CurrenciesFrom)
+                .WithOne(c => c.CurrencyFrom)
+                .HasForeignKey(c => c.CurrencyFromId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(e => e.CurrenciesTo)
+                .WithOne(c => c.CurrencyTo)
+                .HasForeignKey(c => c.CurrencyToId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(e => e.Operations)
+               .WithOne(o => o.Currency)
+               .HasForeignKey(o => o.CurrencyId)
+               .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(e => e.Vouchers)
+                .WithOne(v => v.Currency)
+                .HasForeignKey(v => v.CurrencyId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(e => e.Bookings)
+                .WithOne(b => b.Currency)
+                .HasForeignKey(b => b.CurrencyId)
+                .OnDelete(DeleteBehavior.NoAction);
 
         }
     }
