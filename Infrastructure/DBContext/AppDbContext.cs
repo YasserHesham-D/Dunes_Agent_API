@@ -46,6 +46,9 @@ namespace Infrastructure.DBContext
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(Currency).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(CurrencyValues).Assembly);
+
             base.OnModelCreating(modelBuilder);
 
         }

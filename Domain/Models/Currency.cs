@@ -13,15 +13,14 @@ namespace Domain.Models
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; } = null!;
-        public Guid EmployeeAddedId { get; set; }
+        public string EmployeeAddedId { get; set; } = null!;
 
         public virtual Employee Employee { get; set; } = null!;
 
-        public ICollection<CurrencyValues> CurrenciesFrom { get; set; } = null!;
+        public ICollection<CurrencyValues> CurrenciesFrom { get; set; } = new List<CurrencyValues>();
+        public ICollection<CurrencyValues> CurrenciesTo { get; set; } = new List<CurrencyValues>();
 
-        public ICollection<CurrencyValues> CurrenciesTo { get; set; } = null!;
-
-        public ICollection<Operation> Operations { get; set; } = null!;
+        public ICollection<Operation> Operations { get; set; } =  new List<Operation>();
 
         public ICollection<ReciptVoucher>? Vouchers { get; set; }
 
@@ -47,17 +46,18 @@ namespace Domain.Models
             builder.HasMany(e => e.CurrenciesFrom)
                 .WithOne(c => c.CurrencyFrom)
                 .HasForeignKey(c => c.CurrencyFromId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.NoAction)
+             .IsRequired();
 
             builder.HasMany(e => e.CurrenciesTo)
                 .WithOne(c => c.CurrencyTo)
                 .HasForeignKey(c => c.CurrencyToId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.NoAction).IsRequired();
 
             builder.HasMany(e => e.Operations)
                .WithOne(o => o.Currency)
                .HasForeignKey(o => o.CurrencyId)
-               .OnDelete(DeleteBehavior.NoAction);
+               .OnDelete(DeleteBehavior.NoAction).IsRequired();
 
             builder.HasMany(e => e.Vouchers)
                 .WithOne(v => v.Currency)

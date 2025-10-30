@@ -12,7 +12,7 @@ namespace Domain.Models
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; } = null!;
-        public Guid EmployeeAddedId { get; set; }
+        public string EmployeeAddedId { get; set; } = null!;
 
         public virtual Employee Employee { get; set; } = null!;
 
@@ -29,7 +29,7 @@ namespace Domain.Models
         public void Configure(EntityTypeBuilder<PaymentMethod> builder)
         {
 
-            builder.ToTable("PaymentStatuses");
+            builder.ToTable("PaymentMethods");
 
             // Primary Key
             builder.HasKey(e => e.Id);

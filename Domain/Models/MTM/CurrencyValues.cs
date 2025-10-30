@@ -16,7 +16,7 @@ namespace Domain.Models.MTM
         public decimal Price { get; set; }
         public Guid CurrencyToId { get; set; }
         public virtual Currency CurrencyTo { get; set; } = null!;
-        public Guid EmployeeAddedId { get; set; }
+        public string EmployeeAddedId { get; set; } = null!;
         public virtual Employee Employee { get; set; } = null!;
     }
 
@@ -35,17 +35,18 @@ namespace Domain.Models.MTM
 
             // Relationships ------------------------------
 
-            
+
             builder.HasOne(bs => bs.CurrencyFrom)
                 .WithMany(b => b.CurrenciesFrom)
                 .HasForeignKey(bs => bs.CurrencyFromId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.NoAction)
+             .IsRequired();
 
-          
+
             builder.HasOne(bs => bs.CurrencyTo)
                 .WithMany(s => s.CurrenciesTo)
                 .HasForeignKey(bs => bs.CurrencyToId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.NoAction).IsRequired();
 
             // Location (Many-to-One)
             builder.HasOne(bs => bs.Employee)

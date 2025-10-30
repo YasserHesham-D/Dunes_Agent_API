@@ -28,16 +28,16 @@ namespace Domain.Models
 
         public SalaryType SalaryType { get; set; }
         public bool IsFromUAE { get; set; }
-        public decimal? SalaryValue { get; set; } = 0;
+        public decimal SalaryValue { get; set; } = 0;
        
-        public decimal? CommissionRate { get; set; } = 0;
+        public decimal CommissionRate { get; set; } = 0;
 
-        public decimal? StaffVisaCount { get; set; } = 0;
+        public decimal StaffVisaCount { get; set; } = 0;
 
         public Guid? HotelId { get; set; }
         
         public virtual Hotel? Hotel { get; set; }
-        public Guid EmployeeAddedId { get; set; }
+        public string EmployeeAddedId { get; set; } = null!;
 
         public virtual Employee EmployeeAdd { get; set; } = null!;    
         public Guid? LocationId { get; set; }

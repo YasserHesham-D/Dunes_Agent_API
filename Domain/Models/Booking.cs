@@ -42,7 +42,7 @@ namespace Domain.Models
         public virtual PaymentMethod PaymentMethod { get; set; } = null!;
         public Guid PaymentStatusId { get; set; }
         public virtual PaymentStatus PaymentStatus { get; set; } = null!;
-        public Guid EmployeeAddedId { get; set; }
+        public string EmployeeAddedId { get; set; } = null!;
         public virtual Employee Employee { get; set; } = null!;
 
 
