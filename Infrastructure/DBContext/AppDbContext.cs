@@ -26,7 +26,6 @@ namespace Infrastructure.DBContext
         public DbSet<Booking>Bookings { get; set; }
         public DbSet<Currency> Currencies { get; set; }
         public DbSet<Driver> Drivers { get; set; }
-        public DbSet<Employee> Employees { get; set; }
         public DbSet<History> Histories { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Location> Locations { get; set; }
