@@ -1,4 +1,4 @@
-using Domain.Models;
+﻿using Domain.Models;
 using Infrastructure.DBContext;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +19,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // migration command : Add-Migration InitialCreate -Project Infrastructure -StartupProject Presentation -OutputDir Migrations
 //                      update-database -startupproject Presentation
 
-builder.Services.AddIdentity<Employee, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+//builder.Services.AddIdentity<Employee, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.AddIdentity<Employee, IdentityRole>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+})
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders();
 
 builder.Services.ServicesCollection();
 
@@ -52,5 +63,29 @@ app.UseAuthorization();
 app.UseMiddleware<GlobalExceptionMiddleWare>();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    try
+    {
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        var userManager = services.GetRequiredService<UserManager<Employee>>();
+
+        await SeedRolesHelper.SeedRolesAsync(roleManager);
+        //await SeedRolesHelper.SeedAdminAsync(userManager, roleManager);
+
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("✅ Roles and admin user seeded successfully!");
+        Console.ResetColor();
+    }
+    catch (Exception ex)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine($"❌ Error seeding roles or admin user: {ex.Message}");
+        Console.ResetColor();
+    }
+}
 
 app.Run();
