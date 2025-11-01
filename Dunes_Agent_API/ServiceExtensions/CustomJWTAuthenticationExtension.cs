@@ -4,22 +4,14 @@ using System.Text;
 
 namespace Presentation.ServiceExtensions
 {
-    public class JWTOptions
-    {
-        public string Issuer { get; set; } = null!;
-        public string Audience { get; set; } = null!;
-        public string Signingkey { get; set; } = null!;
-        public double Lifetime { get; set; }
 
-    }
 
     public static class CustomJWTAuthenticationExtension
     {
 
         public static void CustomJwtAuth(this IServiceCollection services, IConfiguration configuration)
         {
-            var jWT = new JWTOptions();
-            configuration.GetSection("Jwt").Bind(jWT);
+            var jWT =  configuration.GetSection("JWT");
 
             services.AddSingleton(jWT);
 
@@ -38,17 +30,17 @@ namespace Presentation.ServiceExtensions
                 Options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = jWT.Issuer,
+                    ValidIssuer = jWT.GetSection("Issuer").Value,
 
                     ValidateAudience = true,
-                    ValidAudience = jWT.Audience,
+                    ValidAudience = jWT.GetSection("Audience").Value,
 
                     ValidateLifetime = true,
                    
                     ClockSkew = TimeSpan.Zero, 
 
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jWT.Signingkey)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jWT.GetSection("SigningKey").Value)),
                     RequireExpirationTime = true,
                     RequireSignedTokens = true
                 };

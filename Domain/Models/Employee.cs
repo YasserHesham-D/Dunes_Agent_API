@@ -19,10 +19,11 @@ namespace Domain.Models
         public const string Admin = "Admin";
 
     }
+
     public class Employee : IdentityUser
     {
         public string FullName { get; set; } = null!;
-       
+        
         public DateTime JoinDate { get; set; }
         public bool IsDeleted { get; set; } 
 
@@ -85,6 +86,9 @@ namespace Domain.Models
 
             // Primary Key
             builder.HasKey(e => e.Id);
+
+            builder.Property(e => e.Email)
+                .IsRequired();
 
             // Properties
             builder.Property(e => e.FullName)
