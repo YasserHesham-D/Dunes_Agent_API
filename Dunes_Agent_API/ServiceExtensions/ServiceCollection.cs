@@ -1,5 +1,8 @@
-﻿using Domain.Interfaces.IRepository;
+﻿using Application.Services.AccountServices;
+using Domain.Interfaces.IModelsRepo;
+using Domain.Interfaces.IRepository;
 using Domain.Interfaces.IUnitOfWork;
+using Infrastructure.Repositories.ModelRepo;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
 
@@ -11,6 +14,11 @@ namespace Presentation.ServiceExtensions
         {
             services.AddScoped(typeof(IRepo<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<IAccountsRepo, AccountsRepo>();
+            services.AddScoped<IAccountServices, AccountServices>();
+
+            
 
             return services;
         }
