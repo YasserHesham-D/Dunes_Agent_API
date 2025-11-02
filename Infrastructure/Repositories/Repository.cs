@@ -39,7 +39,7 @@ namespace Infrastructure.Repository
         }
 
         // GET WITH PREDICATE
-        public virtual async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> predicate)
+        public virtual async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate)
         {
             return await _dbSet.Where(predicate).ToListAsync();
         }
@@ -165,6 +165,9 @@ namespace Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-
+        public Task<T> GetByIdAsync(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

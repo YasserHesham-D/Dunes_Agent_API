@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Models.Accounts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,7 @@ namespace Application.Dtos.Login
     {
         public string Token { get; set; } = string.Empty;
         public string ExpirationDT { get; set; } = string.Empty;
+
+        public RefreshToken RefreshToken { get; set; } = null!;
     }
 }

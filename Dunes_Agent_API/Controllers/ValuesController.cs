@@ -9,6 +9,7 @@ namespace Presentation.Controllers
     public class ValuesController : ControllerBase
     {
         [HttpGet]
+        [Authorize]
         public IActionResult Get() 
         {
             return Ok("Values");

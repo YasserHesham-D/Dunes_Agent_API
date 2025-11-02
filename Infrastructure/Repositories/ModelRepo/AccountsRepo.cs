@@ -1,5 +1,5 @@
 ﻿using Domain.Interfaces.IModelsRepo;
-using Domain.Models;
+using Domain.Models.Accounts;
 using Infrastructure.DBContext;
 using Infrastructure.Repository;
 using System;
@@ -14,6 +14,11 @@ namespace Infrastructure.Repositories.ModelRepo
     {
         public AccountsRepo(AppDbContext context) : base(context)
         {
+        }
+
+        public virtual async Task<Employee> GetByIdAsync(string id)
+        {
+            return await _dbSet.FindAsync(id);
         }
     }
 }

@@ -17,7 +17,8 @@ namespace Presentation.ServiceExtensions
 
             services.AddScoped<IAccountsRepo, AccountsRepo>();
             services.AddScoped<IAccountServices, AccountServices>();
-
+            services.AddScoped<IRefreshToken, RTokenRepo>();
+            services.AddScoped<ITokenBlackListService, InMemoryTokenBlacklistService>();
             
 
             return services;
