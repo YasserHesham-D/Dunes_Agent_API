@@ -1,7 +1,6 @@
-﻿using Application.DTOS;
-using Application.DTOS.Hotels;
-using Domain.Interfaces.IRepository;
-using Domain.Interfaces.IServices;
+﻿using Application.Dtos;
+using Application.Dtos.HotelsandLocations;
+using Domain.Interfaces.IModelsRepo;
 using Domain.Interfaces.IUnitOfWork;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -11,19 +10,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Services.Classes
+namespace Application.Services.HotelService
 {
     public class HotelService : IHotelService
     {
         private readonly IHotelRepo hotelRepo;
+        private readonly IAccountsRepo accountsRepo;
         private readonly IUnitOfWork unitOfWork;
 
-        public HotelService(IHotelRepo hotelRepo , IUnitOfWork unitOfWork)
+        public HotelService(IHotelRepo hotelRepo, IUnitOfWork unitOfWork)
         {
             this.hotelRepo = hotelRepo;
             this.unitOfWork = unitOfWork;
         }
-        public async Task<DataResponseDTO> AddNewHotel(AddNewHotelDTO addNewHotelDTO)
+        public async Task<DataResponseDTO> AddNewHotel(AddNewDTO addNewHotelDTO)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace Application.Services.Classes
                         Success = false,
                         Message = "Data Is Required"
                     };
-                        
+
                 }
 
                 if (addNewHotelDTO.Name.Length<=2)
@@ -86,14 +86,15 @@ namespace Application.Services.Classes
 
 
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 return new DataResponseDTO
                 {
                     Success = false,
                     Message = ex.Message,
                 };
             }
-          
+
         }
 
         public async Task<DataResponseDTO> DeleteHotel(Guid Id)
@@ -129,9 +130,9 @@ namespace Application.Services.Classes
             }
         }
 
-        public async Task<IQueryable<GetAllHotelsDTO>> GetAllHotels()
+        public async Task<IQueryable<GetAllDTO>> GetAllHotels()
         {
-            var hotels = hotelRepo.GetAll().AsNoTracking().Select(x => new GetAllHotelsDTO
+            var hotels = hotelRepo.GetAll().AsNoTracking().Select(x => new GetAllDTO
             {
                 Id = x.Id,
                 Name = x.Name,
@@ -140,13 +141,13 @@ namespace Application.Services.Classes
                 EmployeeAdded =x.Employee.FullName
             });
 
-           
+
 
             return hotels;
         }
 
-        public async Task<Pagination<GetAllHotelsDTO>> GetAllHotelsPaginated
-        (string? Name, string? Place, string? Employee, DateTime? DateFrom, DateTime? DateTo, string SortColumn="EntryDate",bool IsAscending = false, int Page = 1, int PageSize = 20)
+        public async Task<Pagination<GetAllDTO>> GetAllHotelsPaginated
+        (string? Name, string? Place, string? Employee, DateTime? DateFrom, DateTime? DateTo, string SortColumn = "EntryDate", bool IsAscending = false, int Page = 1, int PageSize = 20)
         {
             var hotels = hotelRepo.GetAll();
 
@@ -183,22 +184,30 @@ namespace Application.Services.Classes
             var result = hotelRepo.Sort(hotels, SortColumn, IsAscending);
 
 
-            var HotelsDto = result.Select(hotel => new GetAllHotelsDTO
+            var HotelsDto = result.Select(hotel => new GetAllDTO
             {
-               Id = hotel.Id,
-               Name = hotel.Name,
-               Place = hotel.Place,
-               EntryDate = hotel.EntryDate,
-               EmployeeAdded = hotel.Employee.FullName
+                Id = hotel.Id,
+                Name = hotel.Name,
+                Place = hotel.Place,
+                EntryDate = hotel.EntryDate,
+                EmployeeAdded = hotel.Employee.FullName
             });
 
             //// Check if any products exist before pagination
             //var totalCount = await HotelsDto.CountAsync();
-          
 
-            var paginatedhotels = await Pagination<GetAllHotelsDTO>.CreateAsync(HotelsDto, Page, PageSize);
+
+            var paginatedhotels = await Pagination<GetAllDTO>.CreateAsync(HotelsDto, Page, PageSize);
 
             return paginatedhotels;
+        }
+
+        public async Task<Dictionary<string, int>> GetEmployeesByHotelAsync()
+        {
+            return await accountsRepo.GetAll()
+         .GroupBy(c => c.Hotel.Name)
+         .Select(g => new { Hotel = g.Key, Count = g.Count() })
+         .ToDictionaryAsync(x => x.Hotel, x => x.Count);
         }
 
         //public async Task<Dictionary<string, int>> GetEmployeesByHotelAsync()
@@ -209,11 +218,11 @@ namespace Application.Services.Classes
         // .ToDictionaryAsync(x => x.Country, x => x.Count);
         //}
 
-        public async Task<GetHotelDetailsDTO> GetHotelDetails(Guid Id)
+        public async Task<GetDetailsDTO> GetHotelDetails(Guid Id)
         {
-            var existedhotel = hotelRepo.GetAll().AsNoTracking().Where(x=>x.Id==Id);
+            var existedhotel = hotelRepo.GetAll().AsNoTracking().Where(x => x.Id==Id);
 
-            var hotel = existedhotel.Select(x => new GetHotelDetailsDTO
+            var hotel = existedhotel.Select(x => new GetDetailsDTO
             {
                 Name = x.Name,
                 Place = x.Place,
@@ -222,32 +231,32 @@ namespace Application.Services.Classes
 
             }).FirstOrDefault();
 
-           
 
-             return hotel;
-           
+
+            return hotel;
+
 
 
         }
 
-        public async Task<Pagination<GetHotelEmployeesCountDTO>> GetHotelEmployeesCount(int Page = 1, int PageSize = 20)
+        public async Task<Pagination<GetEmployeesCountDTO>> GetHotelEmployeesCount(int Page = 1, int PageSize = 20)
         {
             var hotels = hotelRepo.GetAll();
 
-            var EmployeesDTO = hotels.Select(hotel => new GetHotelEmployeesCountDTO
+            var EmployeesDTO = hotels.Select(hotel => new GetEmployeesCountDTO
             {
                 Id = hotel.Id,
                 Name = hotel.Name,
                 EmployeesCount = hotel.EmployeesBelong.Count()
-               
+
             });
 
-            var paginatedEmployees = await Pagination<GetHotelEmployeesCountDTO>.CreateAsync(EmployeesDTO, Page, PageSize);
+            var paginatedEmployees = await Pagination<GetEmployeesCountDTO>.CreateAsync(EmployeesDTO, Page, PageSize);
 
             return paginatedEmployees;
         }
 
-        public async Task<DataResponseDTO> UpdateHotel(Guid Id, UpdateHotelDTO UpdatedHotelDto)
+        public async Task<DataResponseDTO> UpdateHotel(Guid Id, UpdateDTO UpdatedHotelDto)
         {
             try
             {

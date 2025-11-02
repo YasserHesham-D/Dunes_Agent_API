@@ -4,17 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DTOS.Hotels
+namespace Application.Dtos.HotelsandLocations
 {
-    public class GetAllHotelsDTO
+    public class GetDetailsDTO
     {
-        public Guid Id { get; set; }
-
         public string Name { get; set; } = null!;
 
         public string Place { get; set; } = null!;
 
-        public DateTime EntryDate { get; set; } 
+        public DateTime? EntryDate { get; set; }
 
         public string? EmployeeAdded { get; set; }
     }

@@ -16,7 +16,6 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
 	  <Folder Include="Dtos\" />
 	  <Folder Include="Validators\" />
-	  <Folder Include="Services\" />
 	<ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 

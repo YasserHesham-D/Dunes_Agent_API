@@ -17,20 +17,27 @@ namespace Infrastructure.Repository
     {
         protected readonly AppDbContext _context;
         protected readonly DbSet<T> _dbSet;
-        private AppDbContext context;
-        private ILogger<AccountsRepo> logger;
+        protected readonly ILogger<Repository<T>> _logger;
 
-        public Repository(AppDbContext context, Microsoft.Extensions.Logging.ILogger<Repositories.HotelRepo> logger)
+
+        public Repository(AppDbContext context, ILogger<Repository<T>> logger)
         {
-            _context = context;
-            _dbSet = context.Set<T>();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _dbSet = _context.Set<T>();
+            _logger = logger;
         }
 
-        public Repository(AppDbContext context, ILogger<AccountsRepo> logger)
-        {
-            this.context=context;
-            this.logger=logger;
-        }
+        //public Repository(AppDbContext context, ILogger<AccountsRepo> logger)
+        //{
+        //    this.context=context;
+        //    this.logger=logger;
+        //}
+
+        //public Repository(AppDbContext context, ILogger<LocationRepo> logger1)
+        //{
+        //    this.context=context;
+        //    this.logger1=logger1;
+        //}
 
         public AppDbContext GetContext()
         {

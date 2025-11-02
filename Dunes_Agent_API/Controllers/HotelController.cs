@@ -1,6 +1,7 @@
-﻿using Application.DTOS;
-using Application.DTOS.Hotels;
-using Domain.Interfaces.IServices;
+﻿
+using Application.Dtos.HotelsandLocations;
+using Application.Services.HotelService;
+using Application.Services.LocationService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace Presentation.Controllers
         [HttpPost]
         [Route("[Action]")]
         //[Authorize(Roles="Admin,OpreationManager")]
-        public async Task<IActionResult> AddNewHotel(AddNewHotelDTO newHotelDTO)
+        public async Task<IActionResult> AddNewHotel(AddNewDTO newHotelDTO)
         {
 
             if (newHotelDTO == null)
@@ -47,7 +48,7 @@ namespace Presentation.Controllers
         [HttpPatch]
         [Route("[Action]/{Id}")]
         //[Authorize(Roles="Admin,OpreationManager")]
-        public async Task<IActionResult> UpdateHotel(Guid Id , UpdateHotelDTO UpdatedHotelDTO)
+        public async Task<IActionResult> UpdateHotel(Guid Id , UpdateDTO UpdatedHotelDTO)
         {
             
             var updatedhotel = await hotelService.UpdateHotel(Id, UpdatedHotelDTO);
@@ -142,6 +143,22 @@ namespace Presentation.Controllers
             }
 
             return NotFound("Hotel Employees Count Not Found");
+        }
+
+
+        [HttpGet]
+        [Route("[Action]")]
+        //[Authorize(Roles="Admin,OpreationManager")]
+        public async Task<IActionResult> GetHotelEmployeesCount()
+        {
+            var hotelemployees = await hotelService.GetEmployeesByHotelAsync();
+
+            if (hotelemployees != null)
+            {
+                return new JsonResult(hotelemployees);
+            }
+
+            return NotFound("Hotel Employees Not Found");
         }
 
 

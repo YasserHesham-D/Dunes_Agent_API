@@ -1,7 +1,8 @@
-﻿using Domain.Interfaces.IRepository;
+﻿using Domain.Interfaces.IModelsRepo;
 using Domain.Models;
 using Infrastructure.DBContext;
 using Infrastructure.Repository;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -9,16 +10,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Repositories
+namespace Infrastructure.Repositories.ModelRepo
 {
-    public class HotelRepo : Repository<Hotel>, IHotelRepo
+    public class LocationRepo : Repository<Location>, ILocationRepo
     {
-        private readonly ILogger<HotelRepo> _logger;
+        private readonly ILogger<LocationRepo> _logger;
         private readonly AppDbContext _context;
-        public HotelRepo(AppDbContext context, ILogger<HotelRepo> logger) : base(context, logger)
+        public LocationRepo(AppDbContext context, ILogger<LocationRepo> logger) : base(context, logger)
         {
             _context = context;
             _logger = logger;
         }
     }
+    
 }

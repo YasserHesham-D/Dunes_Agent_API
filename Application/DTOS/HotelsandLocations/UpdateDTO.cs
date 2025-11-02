@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DTOS.Hotels
+namespace Application.Dtos.HotelsandLocations
 {
-    public class UpdateHotelDTO
+    public class UpdateDTO
     {
         
         [MinLength(3, ErrorMessage = "The Hotel Name Must Be 3 Or More Letters")]

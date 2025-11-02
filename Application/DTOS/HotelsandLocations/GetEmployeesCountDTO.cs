@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DTOS.Hotels
+namespace Application.Dtos.HotelsandLocations
 {
-    public class GetHotelEmployeesCountDTO
+    public class GetEmployeesCountDTO
     {
         public Guid Id { get; set; }
 

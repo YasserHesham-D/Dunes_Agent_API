@@ -1,10 +1,9 @@
 ﻿using Application.Services.AccountServices;
-using Application.Services.Classes;
+using Application.Services.HotelService;
+using Application.Services.LocationService;
 using Domain.Interfaces.IModelsRepo;
 using Domain.Interfaces.IRepository;
-using Domain.Interfaces.IServices;
 using Domain.Interfaces.IUnitOfWork;
-using Infrastructure.Repositories;
 using Infrastructure.Repositories.ModelRepo;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
@@ -23,6 +22,9 @@ namespace Presentation.ServiceExtensions
 
             services.AddScoped<IHotelRepo, HotelRepo>();
             services.AddScoped<IHotelService, HotelService>();
+
+            services.AddScoped<ILocationRepo, LocationRepo>();
+            services.AddScoped<ILocationService, LocationService>();
 
 
 
