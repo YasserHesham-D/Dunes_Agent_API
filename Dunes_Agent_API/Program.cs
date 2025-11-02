@@ -1,5 +1,5 @@
 ﻿using Application.Validators;
-using Domain.Models;
+using Domain.Models.Accounts;
 using FluentValidation;
 using Infrastructure.DBContext;
 using Microsoft.AspNetCore.Identity;
@@ -61,6 +61,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+
+app.UseMiddleware<TokensBlacklistMiddleware>();
 
 app.UseAuthorization();
 

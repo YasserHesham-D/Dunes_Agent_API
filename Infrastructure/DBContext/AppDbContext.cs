@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Domain.Models.Accounts;
 using Domain.Models.MTM;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,8 @@ namespace Infrastructure.DBContext
         public DbSet<CurrencyValues> CurrencyValues { get; set; }
         public DbSet<LocationServices> LocationServices { get; set; }
         public DbSet<ReciptVoucherServices> ReciptVoucherServices { get; set; }
+
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

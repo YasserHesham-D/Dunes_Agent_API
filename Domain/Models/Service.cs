@@ -1,4 +1,5 @@
 ﻿using Domain.Enums;
+using Domain.Models.Accounts;
 using Domain.Models.MTM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

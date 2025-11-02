@@ -1,4 +1,4 @@
-﻿using Domain.Models;
+﻿using Domain.Models.Accounts;
 using Microsoft.AspNetCore.Identity;
 
 namespace Presentation.ServiceExtensions

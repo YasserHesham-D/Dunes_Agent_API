@@ -13,12 +13,10 @@ namespace Infrastructure.Repositories
 {
     public class HotelRepo : Repository<Hotel>, IHotelRepo
     {
-        private readonly ILogger<HotelRepo> _logger;
         private readonly AppDbContext _context;
-        public HotelRepo(AppDbContext context, ILogger<HotelRepo> logger) : base(context, logger)
+        public HotelRepo(AppDbContext context) : base(context)
         {
             _context = context;
-            _logger = logger;
         }
     }
 }

@@ -1,17 +1,21 @@
 ﻿using Application.Dtos.Login;
 using Application.Services.AccountServices;
-using Domain.Models;
+using Domain.Models.Accounts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class AccountsController(UserManager<Employee> userManager,SignInManager<Employee> signInManager,
-                                    RoleManager<IdentityRole> roleManager,IAccountServices accountService) : ControllerBase
+                                    IAccountServices accountService, ITokenBlackListService tokenBlackListService) : ControllerBase
     {
         [HttpPost]
         [Route("[Action]")]
@@ -41,10 +45,49 @@ namespace Presentation.Controllers
                 return BadRequest("Invalid Email Or Password");
             }
 
-            var AccessToken = await accountService.Login(user);
+            var Tokens = await accountService.Login(user);
 
-            return Ok(AccessToken);
-        } 
+            return Ok(Tokens);
+        }
 
+        [HttpPost]
+        [Route("[Action]")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RefreshToken([FromBody] string refreshToken)
+        {
+            var result = await accountService.RefreshTokenAsync(refreshToken);
+            return Ok(new
+            {
+                accessToken = result.Token,
+                refreshToken = result.RefreshToken.Token
+            });
+        }
+
+        [HttpPost]
+        [Route("[Action]")]
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId)) return Unauthorized("Something Went Wrong ..! ");
+
+            // deleting existed rtokens  // it should be revoked not deleted
+            await accountService.LogoutAsync(userId);
+
+            // Blacklist the current access token
+            var jti = User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Jti)?.Value;
+            if (!string.IsNullOrEmpty(jti))
+            {
+                var expClaim = User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Exp)?.Value;
+                if (!string.IsNullOrEmpty(expClaim) && long.TryParse(expClaim, out var expUnix))
+                {
+                    var exp = DateTimeOffset.FromUnixTimeSeconds(expUnix).UtcDateTime;
+                    await tokenBlackListService.AddToBlacklistAsync(jti, exp);
+                    Log.Information("Access token blacklisted for user: {UserId}", userId);
+                }
+            }
+
+            return Ok("Logged out successfully");
+        }
     }
 }
