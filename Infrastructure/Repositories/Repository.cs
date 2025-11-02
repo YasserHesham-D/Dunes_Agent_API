@@ -8,6 +8,8 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Infrastructure.Extensions;
+using Microsoft.Extensions.Logging;
+using Infrastructure.Repositories.ModelRepo;
 
 namespace Infrastructure.Repository
 {
@@ -15,11 +17,19 @@ namespace Infrastructure.Repository
     {
         protected readonly AppDbContext _context;
         protected readonly DbSet<T> _dbSet;
+        private AppDbContext context;
+        private ILogger<AccountsRepo> logger;
 
         public Repository(AppDbContext context, Microsoft.Extensions.Logging.ILogger<Repositories.HotelRepo> logger)
         {
             _context = context;
             _dbSet = context.Set<T>();
+        }
+
+        public Repository(AppDbContext context, ILogger<AccountsRepo> logger)
+        {
+            this.context=context;
+            this.logger=logger;
         }
 
         public AppDbContext GetContext()
