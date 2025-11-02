@@ -1,4 +1,4 @@
-﻿using Domain.Interfaces.IRepository;
+﻿using Domain.Interfaces.IModelsRepo;
 using Domain.Models;
 using Infrastructure.DBContext;
 using Infrastructure.Repository;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Repositories
+namespace Infrastructure.Repositories.ModelRepo
 {
     public class HotelRepo : Repository<Hotel>, IHotelRepo
     {

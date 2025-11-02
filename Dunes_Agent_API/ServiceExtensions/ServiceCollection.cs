@@ -4,7 +4,6 @@ using Domain.Interfaces.IModelsRepo;
 using Domain.Interfaces.IRepository;
 using Domain.Interfaces.IServices;
 using Domain.Interfaces.IUnitOfWork;
-using Infrastructure.Repositories;
 using Infrastructure.Repositories.ModelRepo;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
