@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Infrastructure.Extensions;
 
 namespace Infrastructure.Repository
 {
@@ -15,7 +16,7 @@ namespace Infrastructure.Repository
         protected readonly AppDbContext _context;
         protected readonly DbSet<T> _dbSet;
 
-        public Repository(AppDbContext context)
+        public Repository(AppDbContext context, Microsoft.Extensions.Logging.ILogger<Repositories.HotelRepo> logger)
         {
             _context = context;
             _dbSet = context.Set<T>();
@@ -25,6 +26,8 @@ namespace Infrastructure.Repository
         {
             return _context;
         }
+
+        
         
         // GET BY ID
         public virtual async Task<T> GetByIdAsync(Guid id)
@@ -165,6 +168,28 @@ namespace Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
+        public IQueryable<T> GetAll()
+        {
+           return _dbSet.AsQueryable();
+        }
 
+        public IQueryable<T> Sort(IQueryable<T> query, string columnName, bool isAscending)
+        {
+            if (!string.IsNullOrEmpty(columnName))
+            {
+                query = query.OrderBy(columnName, isAscending);  // Apply dynamic sorting
+            }
+            return query;
+        }
+
+        public IQueryable<T> Search(Expression<Func<T, bool>> search)
+        {
+            IQueryable<T> query = _dbSet.AsQueryable();
+            if (search != null)
+            {
+                query = query.Where(search);
+            }
+            return query;
+        }
     }
 }
