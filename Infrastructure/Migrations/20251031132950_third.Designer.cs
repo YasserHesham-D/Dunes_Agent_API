@@ -4,6 +4,7 @@ using Infrastructure.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251031132950_third")]
+    partial class third
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,154 +24,6 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Domain.Models.Accounts.Employee", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("CommissionRate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(5,2)")
-                        .HasDefaultValue(0m);
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("EmployeeAddedId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<Guid?>("HotelId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool>("IsFromUAE")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<DateTime>("JoinDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LocationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("SalaryType")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("SalaryValue")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(18,2)")
-                        .HasDefaultValue(0m);
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("StaffVisaCount")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(18,2)")
-                        .HasDefaultValue(0m);
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeAddedId");
-
-                    b.HasIndex("HotelId");
-
-                    b.HasIndex("LocationId");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Models.Accounts.RefreshToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Expires")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("Revoked")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RefreshTokens");
-                });
 
             modelBuilder.Entity("Domain.Models.Analysis", b =>
                 {
@@ -377,6 +232,123 @@ namespace Infrastructure.Migrations
                     b.HasIndex("EmployeeAddedId");
 
                     b.ToTable("Drivers", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Models.Employee", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("CommissionRate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(5,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("EmployeeAddedId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<Guid?>("HotelId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsFromUAE")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime>("JoinDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LocationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("SalaryType")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("SalaryValue")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("StaffVisaCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeAddedId");
+
+                    b.HasIndex("HotelId");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.History", b =>
@@ -1005,31 +977,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Models.Accounts.Employee", b =>
-                {
-                    b.HasOne("Domain.Models.Accounts.Employee", "EmployeeAdd")
-                        .WithMany("EmployeesAdded")
-                        .HasForeignKey("EmployeeAddedId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.Hotel", "Hotel")
-                        .WithMany("EmployeesBelong")
-                        .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("Domain.Models.Location", "Location")
-                        .WithMany("EmployeesBelong")
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("EmployeeAdd");
-
-                    b.Navigation("Hotel");
-
-                    b.Navigation("Location");
-                });
-
             modelBuilder.Entity("Domain.Models.Booking", b =>
                 {
                     b.HasOne("Domain.Models.Currency", "Currency")
@@ -1044,7 +991,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Domain.Models.Accounts.Employee", "Employee")
+                    b.HasOne("Domain.Models.Employee", "Employee")
                         .WithMany("Bookings")
                         .HasForeignKey("EmployeeAddedId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1083,7 +1030,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Currency", b =>
                 {
-                    b.HasOne("Domain.Models.Accounts.Employee", "Employee")
+                    b.HasOne("Domain.Models.Employee", "Employee")
                         .WithMany("CurrenciesAdded")
                         .HasForeignKey("EmployeeAddedId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1094,7 +1041,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Driver", b =>
                 {
-                    b.HasOne("Domain.Models.Accounts.Employee", "Employee")
+                    b.HasOne("Domain.Models.Employee", "Employee")
                         .WithMany("DriversAdded")
                         .HasForeignKey("EmployeeAddedId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1103,9 +1050,34 @@ namespace Infrastructure.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("Domain.Models.Employee", b =>
+                {
+                    b.HasOne("Domain.Models.Employee", "EmployeeAdd")
+                        .WithMany("EmployeesAdded")
+                        .HasForeignKey("EmployeeAddedId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Hotel", "Hotel")
+                        .WithMany("EmployeesBelong")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Domain.Models.Location", "Location")
+                        .WithMany("EmployeesBelong")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("EmployeeAdd");
+
+                    b.Navigation("Hotel");
+
+                    b.Navigation("Location");
+                });
+
             modelBuilder.Entity("Domain.Models.History", b =>
                 {
-                    b.HasOne("Domain.Models.Accounts.Employee", "Employee")
+                    b.HasOne("Domain.Models.Employee", "Employee")
                         .WithMany("History")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1116,7 +1088,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Hotel", b =>
                 {
-                    b.HasOne("Domain.Models.Accounts.Employee", "Employee")
+                    b.HasOne("Domain.Models.Employee", "Employee")
                         .WithMany("HotelsAdded")
                         .HasForeignKey("EmployeeAddedId")
                         .OnDelete(DeleteBehavior.NoAction);
@@ -1126,7 +1098,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Location", b =>
                 {
-                    b.HasOne("Domain.Models.Accounts.Employee", "Employee")
+                    b.HasOne("Domain.Models.Employee", "Employee")
                         .WithMany("LocationsAdded")
                         .HasForeignKey("EmployeeAddedId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1176,7 +1148,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Domain.Models.Accounts.Employee", "Employee")
+                    b.HasOne("Domain.Models.Employee", "Employee")
                         .WithMany("CurrenciesValuesAdded")
                         .HasForeignKey("EmployeeAddedId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1237,7 +1209,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Notification", b =>
                 {
-                    b.HasOne("Domain.Models.Accounts.Employee", "Employee")
+                    b.HasOne("Domain.Models.Employee", "Employee")
                         .WithMany("Notifications")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1254,7 +1226,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Domain.Models.Accounts.Employee", "Employee")
+                    b.HasOne("Domain.Models.Employee", "Employee")
                         .WithMany("Operations")
                         .HasForeignKey("EmployeeAddedId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1275,7 +1247,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.PaymentMethod", b =>
                 {
-                    b.HasOne("Domain.Models.Accounts.Employee", "Employee")
+                    b.HasOne("Domain.Models.Employee", "Employee")
                         .WithMany("PaymentMethodsAdded")
                         .HasForeignKey("EmployeeAddedId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1286,7 +1258,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.PaymentStatus", b =>
                 {
-                    b.HasOne("Domain.Models.Accounts.Employee", "Employee")
+                    b.HasOne("Domain.Models.Employee", "Employee")
                         .WithMany("PaymentStatusAdded")
                         .HasForeignKey("EmployeeAddedId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1303,7 +1275,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Domain.Models.Accounts.Employee", "Employee")
+                    b.HasOne("Domain.Models.Employee", "Employee")
                         .WithMany("Vouchers")
                         .HasForeignKey("EmployeeAddedId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1324,7 +1296,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Service", b =>
                 {
-                    b.HasOne("Domain.Models.Accounts.Employee", "Employee")
+                    b.HasOne("Domain.Models.Employee", "Employee")
                         .WithMany("ServicesAdded")
                         .HasForeignKey("EmployeeAddedId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1344,7 +1316,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Domain.Models.Accounts.Employee", null)
+                    b.HasOne("Domain.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1353,7 +1325,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Domain.Models.Accounts.Employee", null)
+                    b.HasOne("Domain.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1368,7 +1340,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Models.Accounts.Employee", null)
+                    b.HasOne("Domain.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1377,14 +1349,37 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Domain.Models.Accounts.Employee", null)
+                    b.HasOne("Domain.Models.Employee", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Models.Accounts.Employee", b =>
+            modelBuilder.Entity("Domain.Models.Booking", b =>
+                {
+                    b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("Domain.Models.Currency", b =>
+                {
+                    b.Navigation("Bookings");
+
+                    b.Navigation("CurrenciesFrom");
+
+                    b.Navigation("CurrenciesTo");
+
+                    b.Navigation("Operations");
+
+                    b.Navigation("Vouchers");
+                });
+
+            modelBuilder.Entity("Domain.Models.Driver", b =>
+                {
+                    b.Navigation("Bookings");
+                });
+
+            modelBuilder.Entity("Domain.Models.Employee", b =>
                 {
                     b.Navigation("Bookings");
 
@@ -1413,29 +1408,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("ServicesAdded");
 
                     b.Navigation("Vouchers");
-                });
-
-            modelBuilder.Entity("Domain.Models.Booking", b =>
-                {
-                    b.Navigation("Services");
-                });
-
-            modelBuilder.Entity("Domain.Models.Currency", b =>
-                {
-                    b.Navigation("Bookings");
-
-                    b.Navigation("CurrenciesFrom");
-
-                    b.Navigation("CurrenciesTo");
-
-                    b.Navigation("Operations");
-
-                    b.Navigation("Vouchers");
-                });
-
-            modelBuilder.Entity("Domain.Models.Driver", b =>
-                {
-                    b.Navigation("Bookings");
                 });
 
             modelBuilder.Entity("Domain.Models.Hotel", b =>

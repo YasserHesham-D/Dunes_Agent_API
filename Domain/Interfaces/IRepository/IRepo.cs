@@ -11,6 +11,8 @@ namespace Domain.Interfaces.IRepository
     public interface IRepo<T> where T : class
     {
         Task SaveChangesAsync();
+
+        IQueryable<T> GetAll();
         // Get operations
         Task<T> GetByIdAsync(Guid id);
         
@@ -46,5 +48,8 @@ namespace Domain.Interfaces.IRepository
         // Count
         Task<int> CountAsync();
         Task<int> CountAsync(Expression<Func<T, bool>> predicate);
+
+        IQueryable<T> Sort(IQueryable<T> query, string columnName, bool isAscending);
+        IQueryable<T> Search(Expression<Func<T, bool>> search);
     }
 }

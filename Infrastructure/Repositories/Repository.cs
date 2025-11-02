@@ -7,6 +7,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Infrastructure.Extensions;
+using Microsoft.Extensions.Logging;
+using Infrastructure.Repositories.ModelRepo;
 
 namespace Infrastructure.Repository
 {
@@ -21,10 +24,13 @@ namespace Infrastructure.Repository
             _dbSet = context.Set<T>();
         }
 
+
         public AppDbContext GetContext()
         {
             return _context;
         }
+
+        
         
         // GET BY ID
         public virtual async Task<T> GetByIdAsync(Guid id)
@@ -165,9 +171,30 @@ namespace Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public Task<T> GetByIdAsync(string id)
+
+
+        public IQueryable<T> GetAll()
         {
-            throw new NotImplementedException();
+           return _dbSet.AsQueryable();
+        }
+
+        public IQueryable<T> Sort(IQueryable<T> query, string columnName, bool isAscending)
+        {
+            if (!string.IsNullOrEmpty(columnName))
+            {
+                query = query.OrderBy(columnName, isAscending);  // Apply dynamic sorting
+            }
+            return query;
+        }
+
+        public IQueryable<T> Search(Expression<Func<T, bool>> search)
+        {
+            IQueryable<T> query = _dbSet.AsQueryable();
+            if (search != null)
+            {
+                query = query.Where(search);
+            }
+            return query;
         }
     }
 }
