@@ -9,14 +9,9 @@ namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HotelController : ControllerBase
+    public class HotelController(IHotelService hotelService) : ControllerBase
     {
-        private readonly IHotelService hotelService;
 
-        public HotelController(IHotelService hotelService)
-        {
-            this.hotelService = hotelService;
-        }
 
         [HttpPost]
         [Route("[Action]")]
@@ -28,6 +23,7 @@ namespace Presentation.Controllers
             {
                 return NotFound("Data Is Missed Creditionals");
             }
+
             var newhotel = await hotelService.AddNewHotel(newHotelDTO);
 
             if (newhotel == null) {

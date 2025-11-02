@@ -1,6 +1,6 @@
 ﻿using Application.DTOS;
 using Application.DTOS.Hotels;
-using Domain.Interfaces.IRepository;
+using Domain.Interfaces.IModelsRepo;
 using Domain.Interfaces.IServices;
 using Domain.Interfaces.IUnitOfWork;
 using Domain.Models;
@@ -23,6 +23,7 @@ namespace Application.Services.Classes
             this.hotelRepo = hotelRepo;
             this.unitOfWork = unitOfWork;
         }
+
         public async Task<DataResponseDTO> AddNewHotel(AddNewHotelDTO addNewHotelDTO)
         {
             try
