@@ -16,9 +16,9 @@ namespace Infrastructure.Repositories.ModelRepo
 {
     public class LocationRepo : Repository<Location>, ILocationRepo
     {
-        private readonly ILogger<ILocationRepo> _logger;
+        private readonly ILogger<Location> _logger;
         private readonly AppDbContext _context;
-        public LocationRepo(AppDbContext context, ILogger<LocationRepo> logger) : base(context, logger)
+        public LocationRepo(AppDbContext context, ILogger<Location> logger) : base(context, logger)
         {
             _context = context;
             _logger = logger;
