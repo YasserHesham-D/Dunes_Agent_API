@@ -1,8 +1,10 @@
 ﻿using Domain.Interfaces.IModelsRepo;
+using Domain.Models;
 using Domain.Models.Accounts;
 using Infrastructure.DBContext;
 using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +15,13 @@ namespace Infrastructure.Repositories.ModelRepo
 {
     public class RTokenRepo : Repository<RefreshToken>, IRefreshToken
     {
-        public RTokenRepo(AppDbContext context) : base(context)
+
+        private readonly AppDbContext _context;
+        private readonly ILogger<RefreshToken> _logger;
+        public RTokenRepo(AppDbContext context , ILogger<RefreshToken> logger) : base(context,logger)
         {
+            _context = context;
+            _logger = logger;
         }
 
         public virtual async Task DeleteAsync(int id)
