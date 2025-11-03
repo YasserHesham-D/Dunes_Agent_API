@@ -1,4 +1,6 @@
-﻿using Domain.Interfaces.IModelsRepo;
+﻿
+
+using Domain.Interfaces.IModelsRepo;
 using Domain.Models;
 using Infrastructure.DBContext;
 using Infrastructure.Repository;
@@ -14,7 +16,7 @@ namespace Infrastructure.Repositories.ModelRepo
 {
     public class LocationRepo : Repository<Location>, ILocationRepo
     {
-        private readonly ILogger<LocationRepo> _logger;
+        private readonly ILogger<ILocationRepo> _logger;
         private readonly AppDbContext _context;
         public LocationRepo(AppDbContext context, ILogger<LocationRepo> logger) : base(context, logger)
         {

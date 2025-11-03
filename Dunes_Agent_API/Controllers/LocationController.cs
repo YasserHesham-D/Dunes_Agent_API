@@ -1,5 +1,5 @@
-﻿using Application.Dtos.HotelsandLocations;
-using Application.Services.HotelService;
+﻿
+using Application.Dtos.HotelsandLocations;
 using Application.Services.LocationService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

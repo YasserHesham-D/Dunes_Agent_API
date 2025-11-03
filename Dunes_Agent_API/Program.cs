@@ -1,5 +1,5 @@
 ﻿using Application.Validators;
-using Domain.Models;
+using Domain.Models.Accounts;
 using FluentValidation;
 using Infrastructure.DBContext;
 using Microsoft.AspNetCore.Identity;
@@ -12,11 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSerilog();
 
-//builder.Services.AddDbContext<AppDbContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("Yasser's")));
-
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Adhams's")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Yasser's")));
+
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("Adhams's")));
 
 // migration command : Add-Migration InitialCreate -Project Infrastructure -StartupProject Presentation -OutputDir Migrations
 //                      update-database -startupproject Presentation
@@ -61,6 +61,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+
+app.UseMiddleware<TokensBlacklistMiddleware>();
 
 app.UseAuthorization();
 

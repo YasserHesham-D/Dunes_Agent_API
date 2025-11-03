@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.IModelsRepo
 {
-    public interface IAccountsRepo : IRepo<Employee>
+    public interface IRefreshToken : IRepo<RefreshToken>
     {
-        
-        Task<Employee> GetByIdAsync(string id);
+        public Task DeleteAsync(int id);
+
     }
 }

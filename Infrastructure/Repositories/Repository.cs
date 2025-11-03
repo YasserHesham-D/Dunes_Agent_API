@@ -17,27 +17,16 @@ namespace Infrastructure.Repository
     {
         protected readonly AppDbContext _context;
         protected readonly DbSet<T> _dbSet;
-        protected readonly ILogger<Repository<T>> _logger;
+        protected readonly ILogger<T> _logger;
 
-
-        public Repository(AppDbContext context, ILogger<Repository<T>> logger)
+        public Repository(AppDbContext context, ILogger<T> logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _dbSet = _context.Set<T>();
             _logger = logger;
         }
 
-        //public Repository(AppDbContext context, ILogger<AccountsRepo> logger)
-        //{
-        //    this.context=context;
-        //    this.logger=logger;
-        //}
-
-        //public Repository(AppDbContext context, ILogger<LocationRepo> logger1)
-        //{
-        //    this.context=context;
-        //    this.logger1=logger1;
-        //}
+        
 
         public AppDbContext GetContext()
         {
@@ -59,7 +48,7 @@ namespace Infrastructure.Repository
         }
 
         // GET WITH PREDICATE
-        public virtual async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> predicate)
+        public virtual async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> predicate)
         {
             return await _dbSet.Where(predicate).ToListAsync();
         }
@@ -184,6 +173,8 @@ namespace Infrastructure.Repository
         {
             await _context.SaveChangesAsync();
         }
+
+
 
         public IQueryable<T> GetAll()
         {

@@ -1,5 +1,5 @@
 ﻿using Domain.Interfaces.IModelsRepo;
-using Domain.Models;
+using Domain.Models.Accounts;
 using Infrastructure.DBContext;
 using Infrastructure.Repository;
 using Microsoft.Extensions.Logging;
@@ -13,13 +13,19 @@ namespace Infrastructure.Repositories.ModelRepo
 {
     public class AccountsRepo : Repository<Employee>, IAccountsRepo
     {
-        private readonly ILogger<AccountsRepo> _logger;
         private readonly AppDbContext _context;
-        public AccountsRepo(AppDbContext context, ILogger<AccountsRepo> logger) : base(context,logger)
+        private readonly ILogger<Employee> _logger;
+        public AccountsRepo(AppDbContext context, ILogger<Employee> logger) : base(context,logger)
         {
             _context = context;
-            _logger = logger;
+            _logger=logger;
+        }
+
+        public virtual async Task<Employee> GetByIdAsync(string id)
+        {
+            return await _dbSet.FindAsync(id);
         }
         
+
     }
 }

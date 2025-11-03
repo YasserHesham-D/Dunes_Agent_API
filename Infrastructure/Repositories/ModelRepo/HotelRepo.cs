@@ -13,9 +13,9 @@ namespace Infrastructure.Repositories.ModelRepo
 {
     public class HotelRepo : Repository<Hotel>, IHotelRepo
     {
-        private readonly ILogger<HotelRepo> _logger;
         private readonly AppDbContext _context;
-        public HotelRepo(AppDbContext context, ILogger<HotelRepo> logger) : base(context, logger)
+        private readonly ILogger<Hotel> _logger;
+        public HotelRepo(AppDbContext context , ILogger<Hotel> logger ) : base(context,logger)
         {
             _context = context;
             _logger = logger;

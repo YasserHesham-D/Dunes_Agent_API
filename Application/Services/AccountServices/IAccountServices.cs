@@ -1,5 +1,5 @@
 ﻿using Application.Dtos.Login;
-using Domain.Models;
+using Domain.Models.Accounts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +11,7 @@ namespace Application.Services.AccountServices
     public interface IAccountServices
     {
         Task<LoginResponseDTO> Login(Employee employee);
-
+        Task<(string Token, RefreshToken RefreshToken)> RefreshTokenAsync(string token);
+        Task LogoutAsync(string userId);
     }
 }
