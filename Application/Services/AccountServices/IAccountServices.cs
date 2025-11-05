@@ -24,5 +24,7 @@ namespace Application.Services.AccountServices
             /*string? status,*/
             int page,
             int pageSize);
+        Task<GetEmployeeById> GetEmployeeByIdAsync(string id);
+
     }
 }
