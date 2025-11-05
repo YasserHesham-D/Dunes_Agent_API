@@ -1,22 +1,27 @@
-﻿using Application.Dtos.Login;
+﻿using Application.Dtos;
+using Application.Dtos.Employee;
+using Application.Dtos.Login;
 using Domain.Interfaces.IModelsRepo;
+using Domain.Interfaces.IRepository;
 using Domain.Interfaces.IUnitOfWork;
 using Domain.Models.Accounts;
+using Domain.Models.MTM;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
+using static Domain.Interfaces.IModelsRepo.IAccountsRepo;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Application.Services.AccountServices
 {
-    public class AccountServices(IConfiguration configuration,IRefreshToken refreshTokenRepo,IAccountsRepo accountsRepo,IUnitOfWork unitOfWork) : IAccountServices
+    public class AccountServices(UserManager<Employee> userManager,RoleManager<IdentityRole> roleManager
+                                ,IConfiguration configuration, IPasswordHasher<Employee> passwordHasher
+                                ,IRefreshToken refreshTokenRepo,IAccountsRepo accountsRepo
+                                ,IUnitOfWork unitOfWork) : IAccountServices
     {
         public async Task<LoginResponseDTO> Login(Employee employee)
         {
@@ -73,13 +78,148 @@ namespace Application.Services.AccountServices
 
         }
 
+        public async Task<bool> AddNewEmployee(AddEmployeeRequest request,string EmployeeAddedId)
+        {
+            var User = await userManager.FindByIdAsync(EmployeeAddedId);
+
+            var userrole = await userManager.GetRolesAsync(User);
+
+            if(userrole.Contains("DeskAgent") || userrole.Contains("TourAgent"))
+                return false;
+
+            if(userManager.FindByEmailAsync(request.Email).Result != null && userManager.FindByNameAsync(request.Name).Result != null)
+                return false;
+
+
+            string? imageUrl = null;
+
+            if (request.Image != null)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
+                Directory.CreateDirectory(uploadsFolder);
+
+                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(request.Image.FileName)}";
+
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    await request.Image.CopyToAsync(stream);
+                }
+
+                 imageUrl = $"/uploads/{fileName}";
+            }
+
+            var newEmployee = new Employee
+            {
+                UserName = request.Name,
+                PhoneNumber = request.PhoneNumber,
+                Email = request.Email,
+                EmployeeAddedId = EmployeeAddedId,
+                HasControlSystemAccess = request.HasControlSystemAccess,
+                ImageUrl = imageUrl,
+                IsFromUAE = request.IsTheEmployeeEmirate,
+                HotelId = request.HotelId,
+                LocationId = request.AreaOfLocationId,
+                SalaryType = request.SalaryType,
+                StaffVisaCount =request.StaffVisaCost,
+                CommissionRate = request.CommissionRate,
+
+                Permissions = request.Permissions.Select(x => new EmployeePermission
+                {
+                    Module = x.Module,
+                    Action = x.Action,
+                    IsGranted = x.IsGranted
+
+                }).ToList()
+
+            };
+
+            var result = await userManager.CreateAsync(newEmployee,request.Password);
+            if (!result.Succeeded)
+                return false;
+
+            var roleExist = await roleManager.RoleExistsAsync(request.Position);
+            if (!roleExist)
+                return false;
+
+            await userManager.AddToRoleAsync(newEmployee, request.Position);
+            await roleManager.CreateAsync(new IdentityRole(request.Position));
+
+            return true;
+        }
+
+        public async Task<Pagination<GetAllEmployees>> GetAllEmployeesAsync(
+            string? fullname,
+            string? position,
+            string? phonenumber,
+            /*string? status,*/
+            int page,
+            int pageSize)
+        {
+            var employeesQuery = accountsRepo.GetAllEmployeesQuery(fullname,position,phonenumber).AsNoTracking();
+
+            // Filter
+            if (!string.IsNullOrEmpty(fullname))
+                employeesQuery = employeesQuery.Where(e => e.UserName.Contains(fullname));
+
+            if (!string.IsNullOrEmpty(phonenumber))
+                employeesQuery = employeesQuery.Where(e => e.PhoneNumber.Contains(phonenumber));
+
+            //if (!string.IsNullOrEmpty(status))
+            //{
+            //    bool isActive = status.Equals("Active", StringComparison.OrdinalIgnoreCase);
+            //    employeesQuery = employeesQuery.Where(e => e.LockoutEnabled != isActive);
+            //}
+
+            // 🔍 Join roles
+            var query =
+                from emp in employeesQuery
+                join ur in userManager.Users
+                    on emp.EmployeeAddedId equals ur.Id into addedByJoin
+                from addedBy in addedByJoin.DefaultIfEmpty()
+                join userRole in userManager.Users
+                    on emp.Id equals userRole.Id into empRoles
+                from empRole in empRoles.DefaultIfEmpty()
+                select new { emp, AddedBy = addedBy };
+
+            // 🎯 Map to DTO
+            var dtoQuery = query.Select(x => new GetAllEmployees
+            {
+                Id = x.emp.Id,
+                Image = x.emp.ImageUrl,
+                FullName = x.emp.UserName,
+                AddedBy = x.AddedBy != null ? x.AddedBy.UserName : "N/A",
+                Position = "N/A", // We'll fill this next
+                Status = x.emp.LockoutEnabled ? "Inactive" : "Active",
+                PhoneNumber = x.emp.PhoneNumber,
+                Salary = x.emp.SalaryValue,
+                CommitionRate = x.emp.CommissionRate,
+                EmployeeIsEmirates = x.emp.IsFromUAE,
+                VisaCost = x.emp.StaffVisaCount,
+                AreaOfLocation = x.emp.Location != null ? x.emp.Location.Name : "N/A",
+                Dues = "N/A",
+                JoiningDate = x.emp.JoinDate,
+                Permissions = x.emp.Permissions.Select(p => new PermissionsDTO
+                {
+                    Id = p.Id,
+                    Module = p.Module,
+                    Action = p.Action,
+                    IsGranted = p.IsGranted
+                }).ToList()
+            });
+
+            return await Pagination<GetAllEmployees>.CreateAsync(dtoQuery, page, pageSize);
+        }
+
+
 
         private string CreateAccessToken(Employee employee)
         {
             var claims = new List<Claim>
             {
                 new(ClaimTypes.NameIdentifier, employee.Id),
-                new(ClaimTypes.Name, employee.FullName),
+                new(ClaimTypes.Name, employee.UserName),
                 new(ClaimTypes.Email, employee.Email),
                 new(Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };

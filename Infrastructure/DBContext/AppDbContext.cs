@@ -41,6 +41,7 @@ namespace Infrastructure.DBContext
         public DbSet<CurrencyValues> CurrencyValues { get; set; }
         public DbSet<LocationServices> LocationServices { get; set; }
         public DbSet<ReciptVoucherServices> ReciptVoucherServices { get; set; }
+        public DbSet<EmployeePermission> EmployeePermissions { get; set; }
 
         public DbSet<RefreshToken> RefreshTokens { get; set; }
 

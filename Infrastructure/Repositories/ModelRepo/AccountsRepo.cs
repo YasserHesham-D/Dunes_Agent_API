@@ -1,7 +1,9 @@
-﻿using Domain.Interfaces.IModelsRepo;
+﻿using Application.Dtos.Employee;
+using Domain.Interfaces.IModelsRepo;
 using Domain.Models.Accounts;
 using Infrastructure.DBContext;
 using Infrastructure.Repository;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -25,7 +27,14 @@ namespace Infrastructure.Repositories.ModelRepo
         {
             return await _dbSet.FindAsync(id);
         }
-        
 
+        public IQueryable<Employee> GetAllEmployeesQuery(string? fullname, string? position, string? phonenumber)
+        {
+            return _context.Users
+                .OfType<Employee>()
+                .Include(e => e.Location)
+                .Include(e => e.Permissions)
+                .Where(e => !e.IsDeleted);
+        }
     }
 }

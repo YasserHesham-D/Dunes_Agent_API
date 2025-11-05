@@ -1,4 +1,6 @@
-﻿using Application.Dtos.Login;
+﻿using Application.Dtos;
+using Application.Dtos.Employee;
+using Application.Dtos.Login;
 using Domain.Models.Accounts;
 using System;
 using System.Collections.Generic;
@@ -13,5 +15,14 @@ namespace Application.Services.AccountServices
         Task<LoginResponseDTO> Login(Employee employee);
         Task<(string Token, RefreshToken RefreshToken)> RefreshTokenAsync(string token);
         Task LogoutAsync(string userId);
+
+        Task<bool> AddNewEmployee(AddEmployeeRequest request, string EmployeeAddedId);
+        public Task<Pagination<GetAllEmployees>> GetAllEmployeesAsync(
+            string? fullname,
+            string? position,
+            string? phonenumber,
+            /*string? status,*/
+            int page,
+            int pageSize);
     }
 }
