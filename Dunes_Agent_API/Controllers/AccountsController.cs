@@ -145,5 +145,19 @@ namespace Presentation.Controllers
 
             return Ok(Result);
         }
+        [HttpPatch]
+        [Route("[Action]/{id}")]
+        public async Task<IActionResult> PatchEmployee(string id, [FromBody] UpdateEmployeeRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("Invalid Request");
+
+            var Result = await  accountService.PatchEmployeeAsync(id,request);
+            if (!Result)
+                return StatusCode(500, "ServiceError");
+
+            return Ok("Employee updated successfully.");
+        }
+
     }
 }

@@ -25,6 +25,7 @@ namespace Application.Services.AccountServices
             int page,
             int pageSize);
         Task<GetEmployeeById> GetEmployeeByIdAsync(string id);
+        Task<bool> PatchEmployeeAsync(string id, UpdateEmployeeRequest request);
 
     }
 }
