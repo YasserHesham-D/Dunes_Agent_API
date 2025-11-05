@@ -146,7 +146,9 @@ namespace Application.Services.LocationService
             return locations;
         }
 
-        public async Task<Pagination<GetAllDTO>> GetAllLocationsPaginated(string? Name, string? Place, string? Employee, DateTime? DateFrom, DateTime? DateTo, string SortColumn = "EntryDate", bool IsAscending = false, int Page = 1, int PageSize = 20)
+        public async Task<Pagination<GetAllDTO>> GetAllLocationsPaginated
+            (string? Name, string? Place, string? Employee, DateTime? DateFrom,
+            DateTime? DateTo, string SortColumn = "EntryDate", bool IsAscending = false, int Page = 1, int PageSize = 20)
         {
             var locations = locationRepo.GetAll();
 

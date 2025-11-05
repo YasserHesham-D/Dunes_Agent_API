@@ -13,8 +13,8 @@ namespace Domain.Models
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; } = null!;
-        public string EmployeeAddedId { get; set; } = null!;
 
+        public string EmployeeAddedId { get; set; } = null!;
         public virtual Employee Employee { get; set; } = null!;
 
         public ICollection<Operation>? Operations { get; set; }

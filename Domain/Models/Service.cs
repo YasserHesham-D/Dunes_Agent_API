@@ -20,18 +20,18 @@ namespace Domain.Models
         public TimeDuration TimeDuration { get; set; }
         public DateTime EntryDate { get; set; } = DateTime.UtcNow;
         
-        public string Name { get; set; } = null!;
+        public string ServiceName { get; set; } = null!;
         public string? Description { get; set; } = null;
         public string? Type { get; set; } = null;
 
         public string EmployeeAddedId { get; set; } = null!;
         public virtual Employee Employee { get; set; } = null!;
 
-        public ICollection<LocationServices> Services { get; set; } = null!;
+        public ICollection<LocationServices>? LocationServices { get; set; } = new List<LocationServices>();
 
-        public ICollection<BookingServices> BookingServices { get; set; } = null!;
+        public ICollection<BookingServices>? BookingServices { get; set; } = new List<BookingServices>();
 
-        public ICollection<ReciptVoucherServices> VoucherServices { get; set; } = null!;
+        public ICollection<ReciptVoucherServices>? VoucherServices { get; set; } = new List<ReciptVoucherServices>();
 
 
 
@@ -46,7 +46,7 @@ namespace Domain.Models
             builder.HasKey(e => e.Id);
 
             // Properties
-            builder.Property(e => e.Name)
+            builder.Property(e => e.ServiceName)
                 .IsRequired()
                 .HasMaxLength(150);
 
@@ -54,7 +54,7 @@ namespace Domain.Models
                 .IsRequired();
 
             builder.Property(e => e.Type)
-               .IsRequired()
+               //.IsRequired()
                .HasMaxLength(100);
 
             builder.Property(e => e.Description)
@@ -84,7 +84,7 @@ namespace Domain.Models
            
 
             // Collections
-            builder.HasMany(e => e.Services)
+            builder.HasMany(e => e.LocationServices)
                 .WithOne(h => h.Service)
                 .HasForeignKey(h => h.ServiceId)
                 .OnDelete(DeleteBehavior.NoAction);

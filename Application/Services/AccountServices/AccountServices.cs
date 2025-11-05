@@ -246,6 +246,45 @@ namespace Application.Services.AccountServices
 
             return result;
         }
+
+        public async Task<bool> PatchEmployeeAsync(string id , UpdateEmployeeRequest request)
+        {
+            var employee = await accountsRepo.GetByIdAsync(id);
+            if (employee == null)
+                return false;
+
+            if (request.UserName != null)
+                employee.UserName = request.UserName;
+
+            if (request.PhoneNumber != null)
+                employee.PhoneNumber = request.PhoneNumber;
+
+            if (request.SalaryValue.HasValue)
+                employee.SalaryValue = request.SalaryValue.Value;
+
+            if (request.CommissionRate.HasValue)
+                employee.CommissionRate = request.CommissionRate.Value;
+
+            if (request.IsFromUAE.HasValue)
+                employee.IsFromUAE = request.IsFromUAE.Value;
+
+            if (request.StaffVisaCount.HasValue)
+                employee.StaffVisaCount = request.StaffVisaCount.Value;
+
+            if (request.JoinDate.HasValue)
+                employee.JoinDate = request.JoinDate.Value;
+
+            if (request.LocationId != Guid.Empty)
+                employee.LocationId = request.LocationId;
+
+            await accountsRepo.UpdateAsync(employee);
+            await unitOfWork.SaveChangesAsync();
+
+            return true;
+        }
+
+
+
         private string CreateAccessToken(Employee employee)
         {
             var claims = new List<Claim>
