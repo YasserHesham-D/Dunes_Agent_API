@@ -134,16 +134,16 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        [Route("[Action]/{Id}")]
-        public async Task<IActionResult> GetEmployeeById(Guid id)
+        [Route("[Action]/{id}")]
+        public async Task<IActionResult> GetEmployeeById(string id)
         {
             if (!ModelState.IsValid) 
                 return BadRequest("Invalid Request");
 
-            // var Result = await accountService.GetEmployeeByIdAsync(id);
+             var Result = await accountService.GetEmployeeByIdAsync(id);
 
 
-            return Ok();
+            return Ok(Result);
         }
     }
 }

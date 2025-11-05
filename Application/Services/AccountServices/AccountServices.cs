@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -212,8 +213,39 @@ namespace Application.Services.AccountServices
             return await Pagination<GetAllEmployees>.CreateAsync(dtoQuery, page, pageSize);
         }
 
+        public async Task<GetEmployeeById?> GetEmployeeByIdAsync(string id)
+        {
+            // Fetch the employee by id
+            var employee = await accountsRepo.GetByIdAsync(id); // Use GetByIdAsync or FindAsync, assuming you have this method
 
+            if (employee == null)
+                throw new ("Employee not found"); // Use custom exception to provide better error handling
 
+            // Get the user's role using UserManager
+            var roles = await userManager.GetRolesAsync(employee);
+            var roleName = roles.FirstOrDefault() ?? "No Role Assigned"; // Ensure there's a fallback if no roles exist
+
+            // Map to DTO
+            var result = new GetEmployeeById
+            {
+                Id = employee.Id,
+                image = employee.ImageUrl,
+                userName = employee.UserName,
+                position = roleName, // Map role to position
+                phoneNumber = employee.PhoneNumber,
+                sallery = employee.SalaryValue,
+                commissionRate = employee.CommissionRate,
+                IsEmirate = employee.IsFromUAE,
+                staffVisaCount = employee.StaffVisaCount,
+                AreaOfLocation = employee.Location?.Name ?? string.Empty, // Avoid null reference if Location is null
+                JoiningDate = employee.JoinDate,
+                HotelName = employee.Hotel.Name,
+                Email = employee.Email,
+                HasControlOverSystem = employee.HasControlSystemAccess
+            };
+
+            return result;
+        }
         private string CreateAccessToken(Employee employee)
         {
             var claims = new List<Claim>

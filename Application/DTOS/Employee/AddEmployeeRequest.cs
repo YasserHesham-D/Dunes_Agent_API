@@ -31,7 +31,7 @@ namespace Application.Dtos.Employee
         public string Password { get; set; } = string.Empty;
         public IFormFile? Image { get; set; } 
 
-        public List<PermissionDto> Permissions { get; set; } = new();
+        public ICollection<PermissionDto>? Permissions { get; set; } = new List<PermissionDto>();
     }
     public class PermissionDto
     {

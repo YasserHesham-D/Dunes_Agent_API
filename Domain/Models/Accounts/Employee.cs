@@ -22,7 +22,7 @@ namespace Domain.Models.Accounts
         public bool HasControlSystemAccess { get; set; }
         public bool IsDeleted { get; set; }
 
-
+        
         public decimal SalaryValue { get; set; } = 0;
         public SalaryType SalaryType { get; set; }
         public decimal CommissionRate { get; set; } 
