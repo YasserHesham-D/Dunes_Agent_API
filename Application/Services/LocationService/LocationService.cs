@@ -138,7 +138,7 @@ namespace Application.Services.LocationService
                 Name = x.Name,
                 Place = x.Place,
                 EntryDate = x.EntryDate,
-                EmployeeAdded =x.Employee.FullName
+                EmployeeAdded =x.Employee.UserName
             });
 
 
@@ -162,7 +162,7 @@ namespace Application.Services.LocationService
 
             if (!string.IsNullOrEmpty(Employee))
             {
-                locations = locations.Where(x => x.Employee.FullName.Contains(Employee));
+                locations = locations.Where(x => x.Employee.UserName.Contains(Employee));
             }
 
 
@@ -189,7 +189,7 @@ namespace Application.Services.LocationService
                 Name = hotel.Name,
                 Place = hotel.Place,
                 EntryDate = hotel.EntryDate,
-                EmployeeAdded = hotel.Employee.FullName
+                EmployeeAdded = hotel.Employee.UserName
             });
 
             //// Check if any products exist before pagination
@@ -218,7 +218,7 @@ namespace Application.Services.LocationService
                 Name = x.Name,
                 Place = x.Place,
                 EntryDate = x.EntryDate,
-                EmployeeAdded = x.Employee.FullName
+                EmployeeAdded = x.Employee.UserName
 
             }).FirstOrDefault();
 

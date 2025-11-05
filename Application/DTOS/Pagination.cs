@@ -45,16 +45,6 @@ namespace Application.Dtos
             return new(items, _PageSize, _Page, TotalCount);
         }
 
-        public static Pagination<T> Create(List<T> items, int page, int pageSize)
-        {
-            var totalCount = items.Count;
-            var paginatedItems = items
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
-
-            return new Pagination<T>(paginatedItems, pageSize, page, totalCount);
-        }
 
     }
 }
