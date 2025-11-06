@@ -12,6 +12,9 @@ namespace Domain.Interfaces.IUnitOfWork
         Task CommitAsync();
         Task RollbackAsync();
         Task<int> SaveChangesAsync();
+        public void Dispose();
+
+
 
     }
 }

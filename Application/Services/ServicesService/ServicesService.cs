@@ -9,6 +9,7 @@ using Domain.Models.Accounts;
 using Domain.Models.MTM;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace Application.Services.ServicesService
 {
-    public class ServicesService(UserManager<Employee> userManager,IServicesRepo serviceRepo,IUnitOfWork unitOfWork) : IServicesService
+    public class ServicesService(ILogger<Service> logger,UserManager<Employee> userManager,IServicesRepo serviceRepo,IUnitOfWork unitOfWork,IMTMRepo mTMRepo) : IServicesService
     {
         public async Task<bool> AddNewServiceAsync(AddNewServiceRequest request, string UserId)
         {
@@ -62,15 +63,32 @@ namespace Application.Services.ServicesService
             var Exist = await serviceRepo.GetByIdAsync(id);
             if (Exist == null) return false;
 
-            var locationservices = Exist.LocationServices.FirstOrDefault();
-
-           // await serviceRepo.DeleteAsync(locationservices);
+            var x = serviceRepo.GetAll().Include(x=>x.LocationServices).Where(x =>x.Id == id).FirstOrDefault();
 
 
-            await serviceRepo.DeleteAsync(Exist);
-            await unitOfWork.SaveChangesAsync();
+            var locationservices = x.LocationServices.FirstOrDefault() ;
+            if (locationservices == null)
+                return false;
 
-            return true;
+
+            await unitOfWork.BeginTransactionAsync();
+            try
+            {
+                mTMRepo.DeleteServiceLocation(locationservices);
+                await serviceRepo.DeleteAsync(Exist);
+
+                await unitOfWork.CommitAsync();
+                
+                return true;
+            }
+            catch (Exception ex)
+            {
+                await unitOfWork.RollbackAsync();
+                unitOfWork.Dispose();
+
+                logger.LogInformation(ex,"Error ON Deleting service");
+                return false;
+            }
         }
 
         public async Task<Pagination<GetAllServicesDTO>> GetAllServicesPaginated

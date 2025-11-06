@@ -17,6 +17,7 @@ namespace Presentation.ServiceExtensions
         {
             services.AddScoped(typeof(IRepo<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IMTMRepo,MTMRepo>();
 
             services.AddScoped<IAccountsRepo, AccountsRepo>();
             services.AddScoped<IAccountServices, AccountServices>();
