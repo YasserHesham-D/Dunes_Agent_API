@@ -5,15 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Dtos.HotelsandLocations
+namespace Application.Dtos.Payment_Methods_and_Status
 {
-    public class UpdateDTO
+    public class UpdateMethodandStatusDTO
     {
-        
         [MinLength(3, ErrorMessage = "The Name Must Be 3 Or More Letters")]
-        public string? Name { get; set; } 
-
-        [MinLength(3, ErrorMessage = "The Place Must Be 3 Or More Letters")]
-        public string? Place { get; set; }
+        public string? Name { get; set; }
     }
 }

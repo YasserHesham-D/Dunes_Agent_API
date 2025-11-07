@@ -1,6 +1,8 @@
 ﻿using Application.Services.AccountServices;
 using Application.Services.HotelService;
 using Application.Services.LocationService;
+using Application.Services.PaymentMethodService;
+using Application.Services.PaymentStatusService;
 using Domain.Interfaces.IModelsRepo;
 using Domain.Interfaces.IRepository;
 using Domain.Interfaces.IUnitOfWork;
@@ -19,6 +21,7 @@ namespace Presentation.ServiceExtensions
 
             services.AddScoped<IAccountsRepo, AccountsRepo>();
             services.AddScoped<IAccountServices, AccountServices>();
+
             services.AddScoped<IRefreshToken, RTokenRepo>();
             services.AddScoped<ITokenBlackListService, InMemoryTokenBlacklistService>();
             
@@ -28,6 +31,12 @@ namespace Presentation.ServiceExtensions
 
             services.AddScoped<ILocationRepo, LocationRepo>();
             services.AddScoped<ILocationService, LocationService>();
+
+            services.AddScoped<IPaymentMethodRepo, PaymentMethodRepo>();
+            services.AddScoped<IPaymentMethodService, PaymentMethodService>();
+
+            services.AddScoped<IPaymentStatusService, PaymentStatusService>();
+            services.AddScoped<IPaymentStatusRepo, PaymentStatusRepo>();
 
 
 
