@@ -1,4 +1,6 @@
-﻿using Application.Dtos.Login;
+﻿using Application.Dtos;
+using Application.Dtos.Employee;
+using Application.Dtos.Login;
 using Application.Services.AccountServices;
 using Domain.Models.Accounts;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Presentation.Controllers
 {
@@ -20,7 +24,7 @@ namespace Presentation.Controllers
         [HttpPost]
         [Route("[Action]")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] LoginRequestDTO requestDTO)   // admin123 @dunes.com , Admin@123
+        public async Task<IActionResult> Login([FromBody] LoginRequestDTO requestDTO)   // admin123 @dunes.com , Admin@123 // yasserhesham360   123123#Dd deskAgent
         {
             if (!ModelState.IsValid)
                 return BadRequest("Invalid Request");
@@ -89,5 +93,71 @@ namespace Presentation.Controllers
 
             return Ok("Logged out successfully");
         }
+
+        [HttpPost]
+        [Route("[Action]")]
+        [Authorize]
+        public async Task<IActionResult> AddEmployee([FromForm] AddEmployeeRequest request)
+        {
+            if (!ModelState.IsValid) 
+                return BadRequest("Invalid Request");
+
+            var UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            if (string.IsNullOrEmpty(UserId))
+                return Unauthorized();
+
+            var Result = await accountService.AddNewEmployee(request,UserId);
+
+            if (!Result)
+                return StatusCode(500, "Service Error");
+
+
+
+
+            return Ok("Employee Added Succesfully");
+        }
+
+        [HttpGet]
+        [Route("[Action]")]
+        //[Authorize]
+        public async Task<IActionResult> GetAllEmployeesPaginated([FromQuery] string? fullname,
+        [FromQuery] string? position,
+        [FromQuery] string? phonenumber,
+        [FromQuery] string? status,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 6) 
+        {
+            var result = await accountService.GetAllEmployeesAsync(fullname,position,phonenumber,page,pageSize);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("[Action]/{id}")]
+        public async Task<IActionResult> GetEmployeeById(string id)
+        {
+            if (!ModelState.IsValid) 
+                return BadRequest("Invalid Request");
+
+             var Result = await accountService.GetEmployeeByIdAsync(id);
+
+
+            return Ok(Result);
+        }
+        [HttpPatch]
+        [Route("[Action]/{id}")]
+        public async Task<IActionResult> PatchEmployee(string id, [FromBody] UpdateEmployeeRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("Invalid Request");
+
+            var Result = await  accountService.PatchEmployeeAsync(id,request);
+            if (!Result)
+                return StatusCode(500, "ServiceError");
+
+            return Ok("Employee updated successfully.");
+        }
+
     }
 }

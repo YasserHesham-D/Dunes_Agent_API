@@ -11,12 +11,13 @@ namespace Domain.Models.MTM
     public class LocationServices
     {
         public Guid Id { get; set; } = Guid.NewGuid();
+
         public Guid ServiceId { get; set; }
+        public virtual Service Service { get; set; } 
 
-        public virtual Service Service { get; set; } = null!;
         public Guid LocationId { get; set; }
+        public virtual Location Location { get; set; } 
 
-        public virtual Location Location { get; set; } = null!;
         public decimal KidsPrice { get; set; }
         public decimal ChildsPrice { get; set; }
         public decimal AdultsPrice { get; set; }
@@ -34,13 +35,13 @@ namespace Domain.Models.MTM
             builder.HasKey(bs => bs.Id);
 
             // Indexes (optional for performance)
-            builder.HasIndex(bs => new { bs.ServiceId, bs.LocationId});
+           // builder.HasIndex(bs => new { bs.ServiceId, bs.LocationId});
 
             // Relationships ------------------------------
 
 
             builder.HasOne(bs => bs.Service)
-                .WithMany(b => b.Services)
+                .WithMany(b => b.LocationServices)
                 .HasForeignKey(bs => bs.ServiceId)
                 .OnDelete(DeleteBehavior.NoAction);
 

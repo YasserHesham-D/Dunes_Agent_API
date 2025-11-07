@@ -3,6 +3,7 @@ using Application.Services.HotelService;
 using Application.Services.LocationService;
 using Application.Services.PaymentMethodService;
 using Application.Services.PaymentStatusService;
+using Application.Services.ServicesService;
 using Domain.Interfaces.IModelsRepo;
 using Domain.Interfaces.IRepository;
 using Domain.Interfaces.IUnitOfWork;
@@ -18,6 +19,7 @@ namespace Presentation.ServiceExtensions
         {
             services.AddScoped(typeof(IRepo<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IMTMRepo,MTMRepo>();
 
             services.AddScoped<IAccountsRepo, AccountsRepo>();
             services.AddScoped<IAccountServices, AccountServices>();
@@ -37,6 +39,9 @@ namespace Presentation.ServiceExtensions
 
             services.AddScoped<IPaymentStatusService, PaymentStatusService>();
             services.AddScoped<IPaymentStatusRepo, PaymentStatusRepo>();
+
+            services.AddScoped<IServicesRepo, ServicesRepo>();
+            services.AddScoped<IServicesService, ServicesService>();
 
 
 

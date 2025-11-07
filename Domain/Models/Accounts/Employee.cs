@@ -11,38 +11,30 @@ using System.Threading.Tasks;
 
 namespace Domain.Models.Accounts
 {
-    public class RoleConstants
-    {
-        public const string TourAgent = "TourAgent";
-        public const string DiscAgent = "DiscAgent";
-        public const string OperationManager = "OperationManager";
-        public const string Admin = "Admin";
-
-    }
 
     public class Employee : IdentityUser
     {
-        public string FullName { get; set; } = null!;
-        
-        public DateTime JoinDate { get; set; }
-        public bool IsDeleted { get; set; } 
+        public DateTime JoinDate { get; set; }= DateTime.UtcNow;
 
-        public SalaryType SalaryType { get; set; }
+        public string? ImageUrl { get; set; }
+
         public bool IsFromUAE { get; set; }
-        public decimal SalaryValue { get; set; } = 0;
-       
-        public decimal CommissionRate { get; set; } = 0;
+        public bool HasControlSystemAccess { get; set; }
+        public bool IsDeleted { get; set; }
 
+        
+        public decimal SalaryValue { get; set; } = 0;
+        public SalaryType SalaryType { get; set; }
+        public decimal CommissionRate { get; set; } 
         public decimal StaffVisaCount { get; set; } = 0;
 
         public Guid? HotelId { get; set; }
-        
         public virtual Hotel? Hotel { get; set; }
+
         public string EmployeeAddedId { get; set; } = null!;
-
-        public virtual Employee EmployeeAdd { get; set; } = null!;    
+        public virtual Employee EmployeeAdd { get; set; } = null!;   
+        
         public Guid? LocationId { get; set; }
-
         public virtual Location? Location { get; set; }
 
         public ICollection<Employee>? EmployeesAdded { get; set; }
@@ -75,7 +67,7 @@ namespace Domain.Models.Accounts
         public ICollection<Booking>? Bookings { get; set; }
 
 
-
+        public ICollection<EmployeePermission>? Permissions { get; set; } = new List<EmployeePermission>();
 
     }
     public class EmployeeConfigration : IEntityTypeConfiguration<Employee>
@@ -91,7 +83,7 @@ namespace Domain.Models.Accounts
                 .IsRequired();
 
             // Properties
-            builder.Property(e => e.FullName)
+            builder.Property(e => e.UserName)
                 .IsRequired()
                 .HasMaxLength(150);
 

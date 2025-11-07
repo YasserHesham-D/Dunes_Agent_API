@@ -13,23 +13,19 @@ namespace Domain.Models
     public class Operation
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-
-        public DateTime Date { get; set; } = DateTime.UtcNow;
+        public DateTime EntryDate { get; set; } = DateTime.UtcNow;
 
         public string OperationName { get; set; } = null!;
         public OpreationType Type { get; set; } 
         public decimal Value { get; set; }
 
         public Guid CurrencyId { get; set; }
-
         public virtual Currency Currency { get; set; } = null!;
 
         public Guid PaymentMethodId { get; set; }
-
         public virtual PaymentMethod PaymentMethod { get; set; } = null!;
 
         public string EmployeeAddedId { get; set; } = null!;
-
         public virtual Employee Employee { get; set; } = null!;
     }
     public class OperationConfigration : IEntityTypeConfiguration<Operation>
@@ -56,7 +52,7 @@ namespace Domain.Models
 
            
 
-            builder.Property(e => e.Date)
+            builder.Property(e => e.EntryDate)
                 .IsRequired();
 
 
