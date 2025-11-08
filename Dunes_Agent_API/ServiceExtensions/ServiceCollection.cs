@@ -2,6 +2,10 @@
 using Application.Services.CurrencyService;
 using Application.Services.HotelService;
 using Application.Services.LocationService;
+
+using Application.Services.NotificationService;
+using Application.Services.ReceiptVoucher;
+
 using Application.Services.PaymentMethodService;
 using Application.Services.PaymentStatusService;
 using Application.Services.ReceiptVoucher;
@@ -12,6 +16,7 @@ using Domain.Interfaces.IUnitOfWork;
 using Infrastructure.Repositories.ModelRepo;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
+using Presentation.Hubs;
 
 namespace Presentation.ServiceExtensions
 {
@@ -51,6 +56,10 @@ namespace Presentation.ServiceExtensions
             services.AddScoped<IReceiptVoucherRepo, ReceiptVoucherRepo>();
             services.AddScoped<IReceiptVoucherService, ReceiptVoucherService>();
 
+
+            services.AddScoped<IRealTimeNotificationService, RealTimeNotificationService>();
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<INotificationRepo, NotificationRepo>();
 
             return services;
         }

@@ -18,6 +18,8 @@ using System.Threading.Tasks;
 
 namespace Application.Services.ServicesService
 {
+    // patch mtm not yet implemented
+
     public class ServicesService(ILogger<Service> logger,UserManager<Employee> userManager,IServicesRepo serviceRepo,IUnitOfWork unitOfWork,IMTMRepo mTMRepo) : IServicesService
     {
         public async Task<bool> AddNewServiceAsync(AddNewServiceRequest request, string UserId)
@@ -34,23 +36,14 @@ namespace Application.Services.ServicesService
                 Description = request.ServiceDescription,
                 EmployeeAddedId = user.Id,
                 ServiceName = request.ServiceName,
-                LocationServices = new List<LocationServices>()
-            };
-
-            if(request.locationServices.Count > 0 )
-            {
-                foreach(var ls in request.locationServices)
+                LocationServices = request.locationServices.Select(x => new LocationServices
                 {
-                    NewService.LocationServices.Add(new LocationServices
-                    {
-                        LocationId = ls.LocationId,
-                        AdultsPrice = ls.AdultPrice,
-                        ChildsPrice = ls.ChildPrice,
-                        KidsPrice = ls.KidPrice
-
-                    });
-                }
-            }
+                    LocationId = x.LocationId,
+                    AdultsPrice = x.AdultPrice,
+                    ChildsPrice = x.ChildPrice,
+                    KidsPrice = x.KidPrice
+                }).ToList(),
+            };
 
             await serviceRepo.AddAsync(NewService);
             await unitOfWork.SaveChangesAsync();
@@ -146,13 +139,7 @@ namespace Application.Services.ServicesService
         {
             var exist = await serviceRepo.GetByIdAsync(id);
 
-            var service = await serviceRepo.GetAll()
-                .Include(s => s.LocationServices)
-                    .ThenInclude(sl => sl.Location)
-                .Include(s => s.Employee)
-                .FirstOrDefaultAsync(s => s.Id == id);
 
-            var sl = service.LocationServices.FirstOrDefault();
 
 
             if (exist == null) return false;
@@ -170,17 +157,17 @@ namespace Application.Services.ServicesService
             if(!string.IsNullOrEmpty(request.TimeDuration.ToString()))
                 exist.TimeDuration = (Domain.Enums.TimeDuration)request.TimeDuration;
 
-            if (request.LocationId != Guid.Empty && request.LocationId != null)
-                sl.LocationId = (Guid)request.LocationId;
+            //if (request.LocationId != Guid.Empty && request.LocationId != null)
+            //    sl.LocationId = (Guid)request.LocationId;
 
-            if (request.KidsPrice != null)
-               sl.KidsPrice = (decimal)request.KidsPrice;
+            //if (request.KidsPrice != null)
+            //   sl.KidsPrice = (decimal)request.KidsPrice;
 
-            if (request.ChildPrice != null)
-                sl.ChildsPrice = (decimal)request.ChildPrice;
+            //if (request.ChildPrice != null)
+            //    sl.ChildsPrice = (decimal)request.ChildPrice;
 
-            if (request.AdultsPrice != null)
-                sl.AdultsPrice = (decimal)request.AdultsPrice;
+            //if (request.AdultsPrice != null)
+            //    sl.AdultsPrice = (decimal)request.AdultsPrice;
 
             await serviceRepo.UpdateAsync(exist);
             await unitOfWork.SaveChangesAsync();
@@ -188,5 +175,6 @@ namespace Application.Services.ServicesService
             return true;
 
         }
+
     }
 }
