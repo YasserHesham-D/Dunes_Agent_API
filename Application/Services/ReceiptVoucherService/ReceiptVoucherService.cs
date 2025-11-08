@@ -50,10 +50,10 @@ namespace Application.Services.ReceiptVoucher
                 {
 
                     LocationId = s.LocationId,
-                    ServiceId = s.ServiceId,
-                    KidsCount = s.KidsCount,
-                    ChildsCount = s.ChildsCount,
-                    AdultsCount = s.AdultsCount
+                    ServiceId = s.ServiceID,
+                    KidsCount = s.KidCount,
+                    ChildsCount = s.ChildCount,
+                    AdultsCount = s.AdultCount
 
                 }).ToList()
             };

@@ -8,7 +8,6 @@ using Application.Services.ReceiptVoucher;
 
 using Application.Services.PaymentMethodService;
 using Application.Services.PaymentStatusService;
-using Application.Services.ReceiptVoucher;
 using Application.Services.ServicesService;
 using Domain.Interfaces.IModelsRepo;
 using Domain.Interfaces.IRepository;
@@ -57,7 +56,7 @@ namespace Presentation.ServiceExtensions
             services.AddScoped<IReceiptVoucherService, ReceiptVoucherService>();
 
 
-            services.AddScoped<IRealTimeNotificationService, RealTimeNotificationService>();
+            services.AddScoped<IRealTimeNotificationService, Application.Services.NotificationService.RealTimeNotificationService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<INotificationRepo, NotificationRepo>();
 
