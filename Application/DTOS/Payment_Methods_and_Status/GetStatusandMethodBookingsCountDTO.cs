@@ -13,5 +13,7 @@ namespace Application.DTOS.Payment_Methods_and_Status
         public string Name { get; set; } = null!;
 
         public int? BookingsCount { get; set; }
+
+        public decimal? TotalMoney { get; set; }
     }
 }

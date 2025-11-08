@@ -133,7 +133,7 @@ namespace Application.Services.PaymentStatusService
             {
                 Id = x.Id,
                 Name = x.Name,
-                EmployeeAdded =x.Employee.FullName
+                EmployeeAdded =x.Employee.UserName
             });
 
 
@@ -154,7 +154,7 @@ namespace Application.Services.PaymentStatusService
 
             if (!string.IsNullOrEmpty(Employee))
             {
-                statuses = statuses.Where(x => x.Employee.FullName.Contains(Employee));
+                statuses = statuses.Where(x => x.Employee.UserName.Contains(Employee));
             }
 
 
@@ -172,7 +172,7 @@ namespace Application.Services.PaymentStatusService
             {
                 Id = hotel.Id,
                 Name = hotel.Name,
-                EmployeeAdded = hotel.Employee.FullName
+                EmployeeAdded = hotel.Employee.UserName
             });
 
             //// Check if any products exist before pagination
@@ -271,7 +271,7 @@ namespace Application.Services.PaymentStatusService
             var status = existedstatus.Select(x => new GetPaymentStatusandMethodDetailsDTO
             {
                 Name = x.Name,
-                EmployeeAdded = x.Employee.FullName
+                EmployeeAdded = x.Employee.UserName
 
             }).FirstOrDefault();
 
@@ -291,7 +291,8 @@ namespace Application.Services.PaymentStatusService
             {
                 Id = status.Id,
                 Name = status.Name,
-                BookingsCount = status.Bookings.Count()
+                BookingsCount = status.Bookings.Count(),
+                TotalMoney = status.Bookings.Sum(x => x.TotalPriceAfterDiscount)
 
             });
 

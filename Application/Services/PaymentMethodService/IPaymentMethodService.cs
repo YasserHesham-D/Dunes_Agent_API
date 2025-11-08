@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.DTOS.Payment_Methods_and_Status.Status;
 
 namespace Application.Services.PaymentMethodService
 {
@@ -26,5 +27,9 @@ namespace Application.Services.PaymentMethodService
         public Task<GetPaymentStatusandMethodDetailsDTO> GetMethodDetails(Guid Id);
 
         public Task<Pagination<GetStatusandMethodBookingsCountDTO>> GetMethodBookingsCount(int Page = 1, int PageSize = 20);
+
+        public Task<Pagination<GetMethodVouchersCountDTO>> GetMethodVouchersCount(int Page = 1, int PageSize = 20);
+
+        public Task<Pagination<GetMethodOpreationsCountDTO>> GetMethodOpreationsCount(int Page = 1, int PageSize = 20);
     }
 }

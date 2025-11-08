@@ -14,5 +14,9 @@ namespace Application.DTOS.Payment_Methods_and_Status.Status
         public string Name { get; set; } = null!;
 
         public int? OpreationsCount { get; set; }
+
+        public decimal? TotalMoney { get; set; }
+
+
     }
 }

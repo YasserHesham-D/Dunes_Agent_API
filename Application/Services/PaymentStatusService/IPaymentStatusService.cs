@@ -2,6 +2,7 @@
 using Application.Dtos.HotelsandLocations;
 using Application.Dtos.Payment_Methods_and_Status;
 using Application.DTOS.Payment_Methods_and_Status;
+using Application.DTOS.Payment_Methods_and_Status.Status;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,5 +28,7 @@ namespace Application.Services.PaymentStatusService
         public Task<GetPaymentStatusandMethodDetailsDTO> GetStatusDetails(Guid Id);
 
         public Task<Pagination<GetStatusandMethodBookingsCountDTO>> GetStatusBookingsCount(int Page = 1, int PageSize = 20);
+
+       
     }
 }

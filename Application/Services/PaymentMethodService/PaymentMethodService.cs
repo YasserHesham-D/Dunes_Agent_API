@@ -1,6 +1,7 @@
 ﻿using Application.Dtos;
 using Application.Dtos.Payment_Methods_and_Status;
 using Application.DTOS.Payment_Methods_and_Status;
+using Application.DTOS.Payment_Methods_and_Status.Status;
 using Domain.Interfaces.IModelsRepo;
 using Domain.Interfaces.IUnitOfWork;
 using Domain.Models;
@@ -131,7 +132,7 @@ namespace Application.Services.PaymentMethodService
             {
                 Id = x.Id,
                 Name = x.Name,
-                EmployeeAdded =x.Employee.FullName
+                EmployeeAdded =x.Employee.UserName,
             });
 
 
@@ -152,7 +153,7 @@ namespace Application.Services.PaymentMethodService
 
             if (!string.IsNullOrEmpty(Employee))
             {
-                methods = methods.Where(x => x.Employee.FullName.Contains(Employee));
+                methods = methods.Where(x => x.Employee.UserName.Contains(Employee));
             }
 
 
@@ -170,7 +171,7 @@ namespace Application.Services.PaymentMethodService
             {
                 Id = m.Id,
                 Name = m.Name,
-                EmployeeAdded = m.Employee.FullName
+                EmployeeAdded = m.Employee.UserName
             });
 
             //// Check if any products exist before pagination
@@ -190,8 +191,8 @@ namespace Application.Services.PaymentMethodService
             {
                 Id = status.Id,
                 Name = status.Name,
-                BookingsCount = status.Bookings.Count()
-
+                BookingsCount = status.Bookings.Count(),
+                TotalMoney = status.Bookings.Sum(x=>x.TotalPriceAfterDiscount)
             });
 
             var paginatedBookings = await Pagination<GetStatusandMethodBookingsCountDTO>.CreateAsync(BookingsDTO, Page, PageSize);
@@ -206,13 +207,47 @@ namespace Application.Services.PaymentMethodService
             var method = existedmethod.Select(x => new GetPaymentStatusandMethodDetailsDTO
             {
                 Name = x.Name,
-                EmployeeAdded = x.Employee.FullName
+                EmployeeAdded = x.Employee.UserName
 
             }).FirstOrDefault();
 
 
 
             return method;
+        }
+
+        public async Task<Pagination<GetMethodOpreationsCountDTO>> GetMethodOpreationsCount(int Page = 1, int PageSize = 20)
+        {
+            var methods = PaymentMethodRepo.GetAll();
+
+            var OpreationsDTO = methods.Select(status => new GetMethodOpreationsCountDTO
+            {
+                Id = status.Id,
+                Name = status.Name,
+                OpreationsCount = status.Operations.Count(),
+                TotalMoney = status.Operations.Sum(x => x.Value)
+            });
+
+            var paginatedOpreations = await Pagination<GetMethodOpreationsCountDTO>.CreateAsync(OpreationsDTO, Page, PageSize);
+
+            return paginatedOpreations;
+        }
+
+        public async Task<Pagination<GetMethodVouchersCountDTO>> GetMethodVouchersCount(int Page = 1, int PageSize = 20)
+        {
+            var methods = PaymentMethodRepo.GetAll();
+
+            var VouchersDTO = methods.Select(status => new GetMethodVouchersCountDTO
+            {
+                Id = status.Id,
+                Name = status.Name,
+                VouchersCount = status.Vouchers.Count(),
+                TotalMoney = status.Vouchers.Sum(x => x.TotalPrice)
+            });
+
+            var paginatedVouchers = await Pagination<GetMethodVouchersCountDTO>.CreateAsync(VouchersDTO, Page, PageSize);
+
+            return paginatedVouchers;
         }
 
         public async Task<DataResponseDTO> UpdateMethod(Guid Id, UpdateMethodandStatusDTO updatemethodDTO)
