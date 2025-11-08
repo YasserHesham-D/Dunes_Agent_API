@@ -13,19 +13,17 @@ namespace Domain.Models
     public class Currency
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public string Name { get; set; } = null!;
-        public string EmployeeAddedId { get; set; } = null!;
 
+        public string Name { get; set; } = null!;
+
+        public string EmployeeAddedId { get; set; } = null!;
         public virtual Employee Employee { get; set; } = null!;
 
-        public ICollection<CurrencyValues> CurrenciesFrom { get; set; } = new List<CurrencyValues>();
-        public ICollection<CurrencyValues> CurrenciesTo { get; set; } = new List<CurrencyValues>();
-
-        public ICollection<Operation> Operations { get; set; } =  new List<Operation>();
-
-        public ICollection<ReciptVoucher>? Vouchers { get; set; }
-
-        public ICollection<Booking>? Bookings { get; set; }
+        public ICollection<CurrencyValues>? CurrenciesFrom { get; set; } = new List<CurrencyValues>();
+        public ICollection<CurrencyValues>? CurrenciesTo { get; set; } = new List<CurrencyValues>();
+        public ICollection<Operation>? Operations { get; set; } =  new List<Operation>();
+        public ICollection<ReciptVoucher>? Vouchers { get; set; } = new List<ReciptVoucher>();
+        public ICollection<Booking>? Bookings { get; set; } = new List<Booking>();
 
 
     }

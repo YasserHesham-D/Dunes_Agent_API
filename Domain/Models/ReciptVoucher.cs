@@ -13,29 +13,25 @@ namespace Domain.Models
     public class ReciptVoucher
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-
-
         public DateTime Date { get; set; } = DateTime.UtcNow;
 
         public string? Notes { get; set; }
 
-        public string? Room { get; set; }
+        public string? NumberOfRooms { get; set; }
 
         public bool IsConfirmed { get; set; }
       
         public string GuestName { get; set; } = null!;
-        public decimal TotalPrice { get; set; } = 0;
+        public string AgentName { get; set; } = null!;
+        public decimal TotalPrice { get; set; } 
 
         public Guid CurrencyId { get; set; }
-
         public virtual Currency Currency { get; set; } = null!;
-
+        
         public Guid PaymentMethodId { get; set; }
-
         public virtual PaymentMethod PaymentMethod { get; set; } = null!;
 
         public string EmployeeAddedId { get; set; } = null!;
-
         public virtual Employee Employee { get; set; } = null!;
 
         public ICollection<ReciptVoucherServices> Services { get; set; } = null!;
@@ -59,7 +55,7 @@ namespace Domain.Models
                .HasDefaultValue(false);
 
 
-            builder.Property(e => e.Room)
+            builder.Property(e => e.NumberOfRooms)
                 .HasMaxLength(20);
 
             builder.Property(e => e.TotalPrice)

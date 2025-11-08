@@ -5,6 +5,7 @@ using Infrastructure.DBContext;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Presentation.Hubs;
 using Presentation.MiddleWares;
 using Presentation.ServiceExtensions;
 using Serilog;
@@ -39,6 +40,7 @@ builder.Services.ServicesCollection();
 
 builder.Services.AddControllers();
 
+builder.Services.AddSignalR();
 
 builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
 
@@ -79,6 +81,7 @@ app.UseAuthorization();
 app.UseMiddleware<GlobalExceptionMiddleWare>();
 
 app.MapControllers();
+app.MapHub<NotificationHub>("/NotificationHub");
 
 using (var scope = app.Services.CreateScope())
 {
