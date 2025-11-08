@@ -1,5 +1,6 @@
 ﻿using Application.Dtos;
 using Application.Dtos.ReceiptVoucher;
+using Application.Services.NotificationService;
 using Domain.Interfaces.IModelsRepo;
 using Domain.Interfaces.IRepository;
 using Domain.Interfaces.IUnitOfWork;
@@ -16,14 +17,21 @@ using System.Threading.Tasks;
 
 namespace Application.Services.ReceiptVoucher
 {
-    public class ReceiptVoucherService(IReceiptVoucherRepo receiptVoucherRepo, IUnitOfWork unitOfWork, UserManager<Employee> userManager) : IReceiptVoucherService
+    //  total price calculation on adding new voucher not yet implemented
+    //  MTM patch not yet implemented
+
+
+    public class ReceiptVoucherService(IAccountsRepo accountsRepo,INotificationService notificationService,IReceiptVoucherRepo receiptVoucherRepo,IMTMRepo mTMRepo, IUnitOfWork unitOfWork, UserManager<Employee> userManager) : IReceiptVoucherService
     {
         public async Task<bool> CreateReceiptVoucherAsync(string userId, AddNewReceiptVoucherRequest request)
         {
             if (request == null)
                 return false;
 
-            if (userManager.FindByIdAsync(userId) == null)
+            
+
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
                 return false;
 
             var voucher = new ReciptVoucher
@@ -36,37 +44,63 @@ namespace Application.Services.ReceiptVoucher
                 PaymentMethodId = request.PaymentMethod,
 
                 EmployeeAddedId = userId,
-                
+
 
                 Services = request.RVServices.Select(s => new ReciptVoucherServices
                 {
-                     
+
                     LocationId = s.LocationId,
-                    ServiceId = s.ServiceId,
-                    KidsCount = s.KidsCount,
-                    ChildsCount = s.ChildsCount,
-                    AdultsCount = s.AdultsCount
+                    ServiceId = s.ServiceID,
+                    KidsCount = s.KidCount,
+                    ChildsCount = s.ChildCount,
+                    AdultsCount = s.AdultCount
 
                 }).ToList()
             };
 
-            var totalprice = 0;
 
+            var totalprice = 0;
             voucher.TotalPrice = totalprice;
 
+            
+            await unitOfWork.BeginTransactionAsync();
+            try
+            {
 
+                await receiptVoucherRepo.AddAsync(voucher);
 
-            await receiptVoucherRepo.AddAsync(voucher);
-            var result = await unitOfWork.SaveChangesAsync();
+                var message = $"Employee {user.UserName} Made A New ReceiptVoucher " ;
+                var pname =  "New ReceiptVoucher";
 
-            if(result==1)
+                var not = new Notification
+                {
+                    EmployeeId = userId,
+                    ProcessId = voucher.Id,
+                    Message = message,
+                    ProcessName = pname,
+                    
+
+                };
+                await notificationService.CreateAsync(not);
+
+                await unitOfWork.CommitAsync();
+                unitOfWork.Dispose();
                 return true;
 
+            }
+            catch (Exception ex)
+            {
+                
+                await unitOfWork.RollbackAsync();
+                unitOfWork.Dispose();
+                return false;
 
-            return false;
+            }
+
         }
 
-        public async Task<Pagination<GetAllReceiptVoucherDTO>> GetAllPaginatedAsync(string? guestName, string? agentName,string? LocationName,string?ServiceName, 
+        public async Task<Pagination<GetAllReceiptVoucherDTO>> GetAllPaginatedAsync(
+            string? guestName, string? agentName,string? LocationName,string?ServiceName, 
             string sortColumn = "CreatedAt", bool isAscending = false, int page = 1, int pageSize = 6)
         {
             var query = receiptVoucherRepo.GetAll();
@@ -176,7 +210,7 @@ namespace Application.Services.ReceiptVoucher
             if (request.PaymentMethodId.HasValue)
                 voucher.PaymentMethodId = request.PaymentMethodId.Value;
 
-            if()
+
 
             await receiptVoucherRepo.UpdateAsync(voucher);
             await receiptVoucherRepo.SaveChangesAsync();

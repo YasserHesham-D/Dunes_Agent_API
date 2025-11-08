@@ -14,6 +14,7 @@ namespace Domain.Models
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public DateTime BookingDate { get; set; } = DateTime.UtcNow;
+
         public string PhoneNumber { get; set; } = null!;
         public string GuestName { get; set; } = null!;
        
@@ -30,19 +31,20 @@ namespace Domain.Models
         public bool IsConfirmed { get; set; }
 
         public Guid DriverId { get; set; }
-
         public virtual Driver Driver { get; set; } = null!;
+
         public Guid HotelId { get; set; }
-
         public virtual Hotel Hotel { get; set; } = null!;
+
         public Guid CurrencyId { get; set; }
-
         public virtual Currency Currency { get; set; } = null!;
-        public Guid PaymentMethodId { get; set; }
 
+        public Guid PaymentMethodId { get; set; }
         public virtual PaymentMethod PaymentMethod { get; set; } = null!;
+
         public Guid PaymentStatusId { get; set; }
         public virtual PaymentStatus PaymentStatus { get; set; } = null!;
+
         public string EmployeeAddedId { get; set; } = null!;
         public virtual Employee Employee { get; set; } = null!;
 

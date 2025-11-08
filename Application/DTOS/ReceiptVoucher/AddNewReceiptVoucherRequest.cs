@@ -18,7 +18,7 @@ namespace Application.Dtos.ReceiptVoucher
         public Guid Currency {  get; set; }
         public Guid PaymentMethod { get; set; } 
 
-        public ICollection<ReciptVoucherServices> RVServices { get; set; } = new List<ReciptVoucherServices>();
+        public ICollection<ReciptVoucherServicesDTO> RVServices { get; set; } = new List<ReciptVoucherServicesDTO>();
         
     }
     public class ReciptVoucherServicesDTO

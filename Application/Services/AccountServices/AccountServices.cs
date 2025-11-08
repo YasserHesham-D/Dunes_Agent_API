@@ -19,6 +19,8 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Application.Services.AccountServices
 {
+
+    // update mtm in patch not yet implemented
     public class AccountServices(UserManager<Employee> userManager,RoleManager<IdentityRole> roleManager
                                 ,IConfiguration configuration, IPasswordHasher<Employee> passwordHasher
                                 ,IRefreshToken refreshTokenRepo,IAccountsRepo accountsRepo
@@ -150,13 +152,8 @@ namespace Application.Services.AccountServices
             return true;
         }
 
-        public async Task<Pagination<GetAllEmployees>> GetAllEmployeesAsync(
-            string? fullname,
-            string? position,
-            string? phonenumber,
-            /*string? status,*/
-            int page,
-            int pageSize)
+        public async Task<Pagination<GetAllEmployees>> GetAllEmployeesAsync
+            (string? fullname,string? position,string? phonenumber,/*string? status,*/int page,int pageSize)
         {
             var employeesQuery = accountsRepo.GetAllEmployeesQuery(fullname,position,phonenumber).AsNoTracking();
 
@@ -213,35 +210,39 @@ namespace Application.Services.AccountServices
             return await Pagination<GetAllEmployees>.CreateAsync(dtoQuery, page, pageSize);
         }
 
-        public async Task<GetEmployeeById?> GetEmployeeByIdAsync(string id)
+        public async Task<GetEmployeeById> GetEmployeeByIdAsync(string id)
         {
-            // Fetch the employee by id
-            var employee = await accountsRepo.GetByIdAsync(id); // Use GetByIdAsync or FindAsync, assuming you have this method
+            var employee = await accountsRepo.GetByIdAsync(id);
 
             if (employee == null)
-                throw new ("Employee not found"); // Use custom exception to provide better error handling
+                throw new ("Employee not found");
 
-            // Get the user's role using UserManager
             var roles = await userManager.GetRolesAsync(employee);
-            var roleName = roles.FirstOrDefault() ?? "No Role Assigned"; // Ensure there's a fallback if no roles exist
+            var roleName = roles.FirstOrDefault() ?? "No Role Assigned"; 
 
-            // Map to DTO
             var result = new GetEmployeeById
             {
                 Id = employee.Id,
                 image = employee.ImageUrl,
                 userName = employee.UserName,
-                position = roleName, // Map role to position
+                position = roleName, 
                 phoneNumber = employee.PhoneNumber,
                 sallery = employee.SalaryValue,
                 commissionRate = employee.CommissionRate,
                 IsEmirate = employee.IsFromUAE,
                 staffVisaCount = employee.StaffVisaCount,
-                AreaOfLocation = employee.Location?.Name ?? string.Empty, // Avoid null reference if Location is null
+                AreaOfLocation = employee.Location?.Name ?? string.Empty, 
                 JoiningDate = employee.JoinDate,
                 HotelName = employee.Hotel.Name,
                 Email = employee.Email,
                 HasControlOverSystem = employee.HasControlSystemAccess
+
+                ,Permissions = employee.Permissions.Select(x => new PermissionDto
+                {
+                    Action = x.Action,
+                    IsGranted = x.IsGranted,
+                    Module = x.Module,
+                }).ToList()
             };
 
             return result;
