@@ -30,7 +30,9 @@ namespace Infrastructure.DBContext
         public DbSet<History> Histories { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Location> Locations { get; set; }
+
         public DbSet<Notification> Notifications { get; set; }
+
         public DbSet<Operation> Operations { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<PaymentStatus> PaymentsStatus { get; set; }

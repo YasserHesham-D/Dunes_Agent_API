@@ -16,13 +16,12 @@ namespace Domain.Models
         public string ProcessName { get; set; } = null!;
         public Guid ProcessId { get; set; }
         
-        public DateTime CreatedAt { get; set; }
-        public bool IsRead { get; set; }
-
+        public DateTime CreatedAt { get; set; }= DateTime.Now;
+        public bool IsRead { get; set; } 
         public string Message { get; set; } = null! ;
 
         public string EmployeeId { get; set; } = null!;
-        public virtual Employee Employee { get; set; } = null!;
+        public virtual Employee Employee { get; set; } 
     }
     public class NotificationConfigration : IEntityTypeConfiguration<Notification>
     {
