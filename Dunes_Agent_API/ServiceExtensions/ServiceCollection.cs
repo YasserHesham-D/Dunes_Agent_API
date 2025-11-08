@@ -1,6 +1,8 @@
 ﻿using Application.Services.AccountServices;
+using Application.Services.CurrencyService;
 using Application.Services.HotelService;
 using Application.Services.LocationService;
+using Application.Services.ReceiptVoucher;
 using Application.Services.ServicesService;
 using Domain.Interfaces.IModelsRepo;
 using Domain.Interfaces.IRepository;
@@ -23,7 +25,7 @@ namespace Presentation.ServiceExtensions
             services.AddScoped<IAccountServices, AccountServices>();
             services.AddScoped<IRefreshToken, RTokenRepo>();
             services.AddScoped<ITokenBlackListService, InMemoryTokenBlacklistService>();
-            
+
 
             services.AddScoped<IHotelRepo, HotelRepo>();
             services.AddScoped<IHotelService, HotelService>();
@@ -34,6 +36,11 @@ namespace Presentation.ServiceExtensions
             services.AddScoped<IServicesRepo, ServicesRepo>();
             services.AddScoped<IServicesService, ServicesService>();
 
+            services.AddScoped<ICurrencyRepo, CurrencyRepo>();
+            services.AddScoped<ICurrencyService, CurrencyService>();
+
+            services.AddScoped<IReceiptVoucherRepo, ReceiptVoucherRepo>();
+            services.AddScoped<IReceiptVoucherService, ReceiptVoucherService>();
 
             return services;
         }

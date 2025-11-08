@@ -18,9 +18,7 @@ namespace Domain.Models
         public virtual Employee Employee { get; set; } = null!;
 
         public ICollection<Operation>? Operations { get; set; }
-
         public ICollection<ReciptVoucher>? Vouchers { get; set; }
-
         public ICollection<Booking>? Bookings { get; set; }
 
 

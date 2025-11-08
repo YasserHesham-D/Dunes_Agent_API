@@ -12,11 +12,15 @@ namespace Domain.Models.MTM
     public class CurrencyValues
     {
         public Guid Id { get; set; }= Guid.NewGuid();
+
         public Guid CurrencyFromId { get; set; }
         public virtual Currency CurrencyFrom { get; set; } = null!;
+
         public decimal Price { get; set; }
+
         public Guid CurrencyToId { get; set; }
         public virtual Currency CurrencyTo { get; set; } = null!;
+
         public string EmployeeAddedId { get; set; } = null!;
         public virtual Employee Employee { get; set; } = null!;
     }

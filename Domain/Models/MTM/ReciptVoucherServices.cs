@@ -11,12 +11,14 @@ namespace Domain.Models.MTM
     public class ReciptVoucherServices
     {
         public Guid Id { get; set; } = Guid.NewGuid();
+
         public Guid ServiceId { get; set; }
         public virtual Service Service { get; set; } = null!;
+
         public Guid LocationId { get; set; }
         public virtual Location Location { get; set; } = null!;
-        public Guid ReciptVoucherId { get; set; }
 
+        public Guid ReciptVoucherId { get; set; }
         public virtual ReciptVoucher Voucher { get; set; } = null!;
 
         public int KidsCount { get; set; }
