@@ -4,6 +4,7 @@ using Application.Services.HotelService;
 using Application.Services.LocationService;
 using Application.Services.PaymentMethodService;
 using Application.Services.PaymentStatusService;
+using Application.Services.ReceiptVoucher;
 using Application.Services.ServicesService;
 using Domain.Interfaces.IModelsRepo;
 using Domain.Interfaces.IRepository;
