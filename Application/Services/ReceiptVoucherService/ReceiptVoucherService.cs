@@ -50,10 +50,10 @@ namespace Application.Services.ReceiptVoucher
                 {
 
                     LocationId = s.LocationId,
-                    ServiceId = s.ServiceID,
-                    KidsCount = s.KidCount,
-                    ChildsCount = s.ChildCount,
-                    AdultsCount = s.AdultCount
+                    ServiceId = s.ServiceId,
+                    KidsCount = s.KidsCount,
+                    ChildsCount = s.ChildsCount,
+                    AdultsCount = s.AdultsCount
 
                 }).ToList()
             };
@@ -210,7 +210,7 @@ namespace Application.Services.ReceiptVoucher
             if (request.PaymentMethodId.HasValue)
                 voucher.PaymentMethodId = request.PaymentMethodId.Value;
 
-            if()
+           
 
             await receiptVoucherRepo.UpdateAsync(voucher);
             await receiptVoucherRepo.SaveChangesAsync();
