@@ -13,9 +13,9 @@ namespace Domain.Models
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
-        public string EmployeeAddedId { get; set; } = null!;
+        public string? EmployeeAddedId { get; set; }
 
-        public virtual Employee Employee { get; set; } = null!;
+        public virtual Employee? Employee { get; set; }
 
         public ICollection<Booking>? Bookings { get; set; }
     }

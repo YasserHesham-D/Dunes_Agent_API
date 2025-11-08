@@ -16,11 +16,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSerilog();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Yasser's")));
-
 //builder.Services.AddDbContext<AppDbContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("Adhams's")));
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("Yasser's")));
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Adhams's")));
 
 // migration command : Add-Migration InitialCreate -Project Infrastructure -StartupProject Presentation -OutputDir Migrations
 //                      update-database -startupproject Presentation
@@ -67,12 +67,12 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "uploads")),
-    RequestPath = "/uploads"
-});
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    FileProvider = new PhysicalFileProvider(
+//        Path.Combine(Directory.GetCurrentDirectory(), "uploads")),
+//    RequestPath = "/uploads"
+//});
 
 app.UseMiddleware<TokensBlacklistMiddleware>();
 
