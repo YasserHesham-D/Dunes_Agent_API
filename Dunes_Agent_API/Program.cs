@@ -19,8 +19,14 @@ builder.Services.AddSerilog();
 //builder.Services.AddDbContext<AppDbContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("Yasser's")));
 
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("Adhams's")));
+
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("Main")));
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Adhams's")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Monster")));
 
 // migration command : Add-Migration InitialCreate -Project Infrastructure -StartupProject Presentation -OutputDir Migrations
 //                      update-database -startupproject Presentation
@@ -57,11 +63,14 @@ builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
