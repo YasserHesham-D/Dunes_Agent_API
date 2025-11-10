@@ -22,6 +22,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 //builder.Services.AddDbContext<AppDbContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("Adhams's")));
 
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Monster")));
+
 
 builder.Services.AddIdentity<Employee, IdentityRole>(options =>
 {
@@ -72,6 +75,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

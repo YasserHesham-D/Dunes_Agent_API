@@ -14,6 +14,7 @@ using Infrastructure.Repositories.ModelRepo;
 using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
 using Presentation.Hubs;
+using Application.Services.CurrencyValuesService;
 
 namespace Presentation.ServiceExtensions
 {
@@ -50,6 +51,9 @@ namespace Presentation.ServiceExtensions
             services.AddScoped<ICurrencyRepo, CurrencyRepo>();
             services.AddScoped<ICurrencyService, CurrencyService>();
 
+            services.AddScoped<ICurrencyValuesRepo, CurrencyValuesRepo>();
+            services.AddScoped<ICurrencyValuesService, CurrencyValuesService>();
+
             services.AddScoped<IReceiptVoucherRepo, ReceiptVoucherRepo>();
             services.AddScoped<IReceiptVoucherService, ReceiptVoucherService>();
 
@@ -57,7 +61,6 @@ namespace Presentation.ServiceExtensions
             services.AddScoped<IRealTimeNotificationService, RealTimeNotificationService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<INotificationRepo, NotificationRepo>();
-
 
             return services;
         }

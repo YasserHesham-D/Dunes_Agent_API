@@ -210,7 +210,7 @@ namespace Application.Services.ReceiptVoucher
             if (request.PaymentMethodId.HasValue)
                 voucher.PaymentMethodId = request.PaymentMethodId.Value;
 
-
+           
 
             await receiptVoucherRepo.UpdateAsync(voucher);
             await receiptVoucherRepo.SaveChangesAsync();
