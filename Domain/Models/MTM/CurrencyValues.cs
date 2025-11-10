@@ -21,8 +21,8 @@ namespace Domain.Models.MTM
         public Guid CurrencyToId { get; set; }
         public virtual Currency CurrencyTo { get; set; } = null!;
 
-        public string EmployeeAddedId { get; set; } = null!;
-        public virtual Employee Employee { get; set; } = null!;
+        public string? EmployeeAddedId { get; set; } = null!;
+        public virtual Employee? Employee { get; set; } = null!;
     }
 
     public class CurrencyValuesConfigration : IEntityTypeConfiguration<CurrencyValues>
