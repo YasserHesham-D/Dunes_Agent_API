@@ -28,7 +28,7 @@ namespace Application.Services.AccountServices
     {
         public async Task<LoginResponseDTO> Login(Employee employee)
         {
-            var Token =  CreateAccessToken(employee);
+            var Token = await CreateAccessToken(employee);
             var TokenExpTime = configuration.GetSection("JWT").GetSection("LifeTime").Value;
 
             int x = int.Parse(TokenExpTime);
@@ -64,7 +64,7 @@ namespace Application.Services.AccountServices
             await refreshTokenRepo.AddAsync(newRefresh);
             await unitOfWork.SaveChangesAsync();
 
-            var jwtToken = CreateAccessToken(user);
+            var jwtToken = await CreateAccessToken(user);
             return (jwtToken, newRefresh);
         }
 
@@ -285,15 +285,19 @@ namespace Application.Services.AccountServices
         }
 
 
-
-        private string CreateAccessToken(Employee employee)
+        private async Task<string> CreateAccessToken(Employee employee)
         {
+            var userroles = await  userManager.GetRolesAsync(employee);
+            var userRole = userroles.FirstOrDefault();
+
             var claims = new List<Claim>
             {
                 new(ClaimTypes.NameIdentifier, employee.Id),
                 new(ClaimTypes.Name, employee.UserName),
                 new(ClaimTypes.Email, employee.Email),
+                new(ClaimTypes.Role, userRole),
                 new(Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                
             };
 
             var JWT = configuration.GetSection("JWT");

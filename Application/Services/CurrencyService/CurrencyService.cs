@@ -336,5 +336,6 @@ namespace Application.Services.CurrencyService
 
             return paginatedVouchers;
         }
+
     }
 }

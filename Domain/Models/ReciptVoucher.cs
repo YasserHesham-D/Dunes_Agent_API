@@ -63,7 +63,6 @@ namespace Domain.Models
                .HasDefaultValue(0);
 
             builder.Property(e => e.Notes)
-               .IsRequired()
                .HasMaxLength(500);
 
             builder.Property(e => e.Date)
