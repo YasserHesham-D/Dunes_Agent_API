@@ -44,5 +44,7 @@ namespace Infrastructure.Repositories.ModelRepo
                 .OrderByDescending(n => n.CreatedAt)
                 .ToListAsync();
         }
+
     }
+
 }

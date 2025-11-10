@@ -4,6 +4,7 @@ using Infrastructure.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251103140707_methodandstatus")]
+    partial class methodandstatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,14 +54,13 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("HasControlSystemAccess")
-                        .HasColumnType("bit");
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<Guid?>("HotelId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -119,7 +121,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -557,36 +558,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("CurrencyValues", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Models.MTM.EmployeePermission", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Action")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("EmployeeId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsGranted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Module")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId1");
-
-                    b.ToTable("EmployeePermissions");
-                });
-
             modelBuilder.Entity("Domain.Models.MTM.LocationServices", b =>
                 {
                     b.Property<Guid>("Id")
@@ -618,7 +589,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.HasIndex("ServiceId");
+                    b.HasIndex("ServiceId", "LocationId");
 
                     b.ToTable("LocationServices", (string)null);
                 });
@@ -731,12 +702,12 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("CurrencyId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("EmployeeAddedId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("EntryDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("OperationName")
                         .IsRequired()
@@ -812,10 +783,6 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AgentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid>("CurrencyId")
                         .HasColumnType("uniqueidentifier");
 
@@ -841,12 +808,12 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("NumberOfRooms")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
                     b.Property<Guid>("PaymentMethodId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Room")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<decimal>("TotalPrice")
                         .ValueGeneratedOnAdd()
@@ -885,7 +852,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("EntryDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ServiceName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
@@ -894,6 +861,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Type")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -1220,15 +1188,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("Domain.Models.MTM.EmployeePermission", b =>
-                {
-                    b.HasOne("Domain.Models.Accounts.Employee", "Employee")
-                        .WithMany("Permissions")
-                        .HasForeignKey("EmployeeId1");
-
-                    b.Navigation("Employee");
-                });
-
             modelBuilder.Entity("Domain.Models.MTM.LocationServices", b =>
                 {
                     b.HasOne("Domain.Models.Location", "Location")
@@ -1238,7 +1197,7 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Service", "Service")
-                        .WithMany("LocationServices")
+                        .WithMany("Services")
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -1448,8 +1407,6 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("PaymentStatusAdded");
 
-                    b.Navigation("Permissions");
-
                     b.Navigation("ServicesAdded");
 
                     b.Navigation("Vouchers");
@@ -1519,7 +1476,7 @@ namespace Infrastructure.Migrations
                 {
                     b.Navigation("BookingServices");
 
-                    b.Navigation("LocationServices");
+                    b.Navigation("Services");
 
                     b.Navigation("VoucherServices");
                 });

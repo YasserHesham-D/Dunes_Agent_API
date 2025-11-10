@@ -14,8 +14,8 @@ namespace Domain.Models
         public Guid Id { get; set; }=Guid.NewGuid();
         public string OperationName { get; set; } = null!;
         public DateTime Date {  get; set; } = DateTime.UtcNow;
-        public string EmployeeId { get; set; } = null!;
 
+        public string EmployeeId { get; set; } = null!;
         public virtual Employee Employee { get; set; } = null!;
 
     }

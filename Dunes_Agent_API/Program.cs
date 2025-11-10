@@ -22,8 +22,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 //builder.Services.AddDbContext<AppDbContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("Adhams's")));
 
-// migration command : Add-Migration InitialCreate -Project Infrastructure -StartupProject Presentation -OutputDir Migrations
-//                      update-database -startupproject Presentation
 
 builder.Services.AddIdentity<Employee, IdentityRole>(options =>
 {
@@ -42,6 +40,16 @@ builder.Services.AddControllers();
 
 builder.Services.AddSignalR();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
 
 
@@ -57,6 +65,8 @@ builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
+app.UseCors("AllowAll");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -66,13 +76,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "uploads")),
-    RequestPath = "/uploads"
-});
 
 app.UseMiddleware<TokensBlacklistMiddleware>();
 

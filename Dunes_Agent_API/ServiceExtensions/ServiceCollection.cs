@@ -3,6 +3,8 @@ using Application.Services.CurrencyService;
 using Application.Services.HotelService;
 using Application.Services.LocationService;
 using Application.Services.NotificationService;
+using Application.Services.PaymentMethodService;
+using Application.Services.PaymentStatusService;
 using Application.Services.ReceiptVoucher;
 using Application.Services.ServicesService;
 using Domain.Interfaces.IModelsRepo;
@@ -25,6 +27,7 @@ namespace Presentation.ServiceExtensions
 
             services.AddScoped<IAccountsRepo, AccountsRepo>();
             services.AddScoped<IAccountServices, AccountServices>();
+
             services.AddScoped<IRefreshToken, RTokenRepo>();
             services.AddScoped<ITokenBlackListService, InMemoryTokenBlacklistService>();
 
@@ -35,6 +38,12 @@ namespace Presentation.ServiceExtensions
             services.AddScoped<ILocationRepo, LocationRepo>();
             services.AddScoped<ILocationService, LocationService>();
 
+            services.AddScoped<IPaymentMethodRepo, PaymentMethodRepo>();
+            services.AddScoped<IPaymentMethodService, PaymentMethodService>();
+
+            services.AddScoped<IPaymentStatusService, PaymentStatusService>();
+            services.AddScoped<IPaymentStatusRepo, PaymentStatusRepo>();
+
             services.AddScoped<IServicesRepo, ServicesRepo>();
             services.AddScoped<IServicesService, ServicesService>();
 
@@ -44,9 +53,11 @@ namespace Presentation.ServiceExtensions
             services.AddScoped<IReceiptVoucherRepo, ReceiptVoucherRepo>();
             services.AddScoped<IReceiptVoucherService, ReceiptVoucherService>();
 
+
             services.AddScoped<IRealTimeNotificationService, RealTimeNotificationService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<INotificationRepo, NotificationRepo>();
+
 
             return services;
         }

@@ -36,5 +36,6 @@ namespace Application.Services.CurrencyService
 
             return true;
         }
+
     }
 }
