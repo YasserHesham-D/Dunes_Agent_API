@@ -7,6 +7,7 @@ namespace Presentation.Hubs
 {
     public class RealTimeNotificationService(IHubContext<NotificationHub> _hubContext) : IRealTimeNotificationService
     {
+
         public async Task SendNotificationToRolesAsync(IEnumerable<string> roles, object notificationPayload)
         {
             await _hubContext.Clients.Groups(roles)
@@ -18,7 +19,9 @@ namespace Presentation.Hubs
             // We assume clients join groups using their EmployeeId
             await _hubContext.Clients.Group(employeeId).SendAsync("ReceiveNotification", notification);
         }
+
     }
+
     public class NotificationHub : Hub
     {
         public override async Task OnConnectedAsync()

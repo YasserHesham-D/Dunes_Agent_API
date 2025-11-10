@@ -14,6 +14,7 @@ namespace Domain.Models
     public class Service
     {
         public Guid Id { get; set; } = Guid.NewGuid();
+        public bool IsDeleted { get; set; } = false;
 
         public int Duration { get; set; } 
 
@@ -44,6 +45,7 @@ namespace Domain.Models
 
             // Primary Key
             builder.HasKey(e => e.Id);
+            builder.Property(x => x.IsDeleted).HasDefaultValue(false);
 
             // Properties
             builder.Property(e => e.ServiceName)

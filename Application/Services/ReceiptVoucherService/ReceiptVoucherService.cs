@@ -42,9 +42,7 @@ namespace Application.Services.ReceiptVoucher
                 Notes = request.Note,
                 CurrencyId = request.Currency,
                 PaymentMethodId = request.PaymentMethod,
-
                 EmployeeAddedId = userId,
-
 
                 Services = request.RVServices.Select(s => new ReciptVoucherServices
                 {
@@ -69,7 +67,7 @@ namespace Application.Services.ReceiptVoucher
 
                 await receiptVoucherRepo.AddAsync(voucher);
 
-                var message = $"Employee {user.UserName} Made A New ReceiptVoucher " ;
+                var message = $"Employee {user.UserName} Made A New ReceiptVoucher {user.Hotel.Name} " ;
                 var pname =  "New ReceiptVoucher";
 
                 var not = new Notification
@@ -78,8 +76,6 @@ namespace Application.Services.ReceiptVoucher
                     ProcessId = voucher.Id,
                     Message = message,
                     ProcessName = pname,
-                    
-
                 };
                 await notificationService.CreateAsync(not);
 

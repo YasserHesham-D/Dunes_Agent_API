@@ -1,16 +1,12 @@
-﻿using Application.Validators;
-using Domain.Models.Accounts;
+﻿using Domain.Models.Accounts;
 using FluentValidation;
 using Infrastructure.DBContext;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
 using Presentation.Hubs;
 using Presentation.MiddleWares;
 using Presentation.ServiceExtensions;
 using Serilog;
-
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,9 +18,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 //builder.Services.AddDbContext<AppDbContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("Adhams's")));
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Monster")));
-
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("Monster")));
 
 builder.Services.AddIdentity<Employee, IdentityRole>(options =>
 {
@@ -52,8 +47,6 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
-
-builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>();
 
 
 builder.Services.AddEndpointsApiExplorer();

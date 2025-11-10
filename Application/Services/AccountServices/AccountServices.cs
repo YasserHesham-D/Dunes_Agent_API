@@ -93,25 +93,7 @@ namespace Application.Services.AccountServices
             if(userManager.FindByEmailAsync(request.Email).Result != null && userManager.FindByNameAsync(request.Name).Result != null)
                 return false;
 
-
-            string? imageUrl = null;
-
-            if (request.Image != null)
-            {
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
-                Directory.CreateDirectory(uploadsFolder);
-
-                var fileName = $"{Guid.NewGuid()}{Path.GetExtension(request.Image.FileName)}";
-
-                var filePath = Path.Combine(uploadsFolder, fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
-                {
-                    await request.Image.CopyToAsync(stream);
-                }
-
-                 imageUrl = $"/uploads/{fileName}";
-            }
+            
 
             var newEmployee = new Employee
             {
@@ -120,7 +102,6 @@ namespace Application.Services.AccountServices
                 Email = request.Email,
                 EmployeeAddedId = EmployeeAddedId,
                 HasControlSystemAccess = request.HasControlSystemAccess,
-                ImageUrl = imageUrl,
                 IsFromUAE = request.IsTheEmployeeEmirate,
                 HotelId = request.HotelId,
                 LocationId = request.AreaOfLocationId,
@@ -130,9 +111,9 @@ namespace Application.Services.AccountServices
 
                 Permissions = request.Permissions.Select(x => new EmployeePermission
                 {
-                    Module = x.Module,
-                    Action = x.Action,
-                    IsGranted = x.IsGranted
+                //    Module = x.Module,
+               //     Action = x.Action,
+                //    IsGranted = x.IsGranted
 
                 }).ToList()
 
@@ -185,7 +166,6 @@ namespace Application.Services.AccountServices
             var dtoQuery = query.Select(x => new GetAllEmployees
             {
                 Id = x.emp.Id,
-                Image = x.emp.ImageUrl,
                 FullName = x.emp.UserName,
                 AddedBy = x.AddedBy != null ? x.AddedBy.UserName : "N/A",
                 Position = "N/A", // We'll fill this next
@@ -201,9 +181,9 @@ namespace Application.Services.AccountServices
                 Permissions = x.emp.Permissions.Select(p => new PermissionsDTO
                 {
                     Id = p.Id,
-                    Module = p.Module,
-                    Action = p.Action,
-                    IsGranted = p.IsGranted
+                  //  Module = p.Module,
+                 //   Action = p.Action,
+                  //  IsGranted = p.IsGranted
                 }).ToList()
             });
 
@@ -223,7 +203,6 @@ namespace Application.Services.AccountServices
             var result = new GetEmployeeById
             {
                 Id = employee.Id,
-                image = employee.ImageUrl,
                 userName = employee.UserName,
                 position = roleName, 
                 phoneNumber = employee.PhoneNumber,
@@ -239,9 +218,9 @@ namespace Application.Services.AccountServices
 
                 ,Permissions = employee.Permissions.Select(x => new PermissionDto
                 {
-                    Action = x.Action,
-                    IsGranted = x.IsGranted,
-                    Module = x.Module,
+                 //   Action = x.Action,
+                 //   IsGranted = x.IsGranted,
+                  //  Module = x.Module,
                 }).ToList()
             };
 
@@ -251,6 +230,7 @@ namespace Application.Services.AccountServices
         public async Task<bool> PatchEmployeeAsync(string id , UpdateEmployeeRequest request)
         {
             var employee = await accountsRepo.GetByIdAsync(id);
+
             if (employee == null)
                 return false;
 

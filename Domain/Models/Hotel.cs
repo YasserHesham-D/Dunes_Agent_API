@@ -12,12 +12,14 @@ namespace Domain.Models
     public class Hotel
     {
         public Guid Id { get; set; } =Guid.NewGuid();
+        public bool IsDeleted { get; set; } = false;
+
         public string Name { get; set; } = null!;
         public string Place { get; set; } = null!;
         public DateTime EntryDate { get; set; } = DateTime.UtcNow;
-        public string? EmployeeAddedId { get; set; }
 
-        public virtual Employee? Employee { get; set; }    
+        public string EmployeeAddedId { get; set; } = null!;
+        public virtual Employee Employee { get; set; } = null!;
 
         public ICollection<Booking> Bookings { get; set; } = null!;
 
@@ -32,6 +34,7 @@ namespace Domain.Models
             builder.ToTable("Hotels");
 
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.IsDeleted).HasDefaultValue(false);
 
             builder.Property(e => e.Name).HasColumnType("NVARCHAR(100)").HasMaxLength(100);
 
@@ -52,7 +55,7 @@ namespace Domain.Models
                 .HasForeignKey(b => b.HotelId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            
+
 
         }
     }

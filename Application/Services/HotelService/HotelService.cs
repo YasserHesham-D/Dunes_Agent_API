@@ -205,9 +205,9 @@ namespace Application.Services.HotelService
         public async Task<Dictionary<string, int>> GetEmployeesByHotelAsync()
         {
             return await accountsRepo.GetAll()
-         .GroupBy(c => c.Hotel.Name)
-         .Select(g => new { Hotel = g.Key, Count = g.Count() })
-         .ToDictionaryAsync(x => x.Hotel, x => x.Count);
+            .GroupBy(c => c.Hotel.Name)
+             .Select(g => new { Hotel = g.Key, Count = g.Count() })
+            .ToDictionaryAsync(x => x.Hotel, x => x.Count);
         }
 
         //public async Task<Dictionary<string, int>> GetEmployeesByHotelAsync()

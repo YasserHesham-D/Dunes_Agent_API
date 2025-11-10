@@ -14,6 +14,7 @@ namespace Domain.Models
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public DateTime EntryDate { get; set; } = DateTime.UtcNow;
+        public bool IsDeleted { get; set; } = false;
 
         public string OperationName { get; set; } = null!;
         public OpreationType Type { get; set; } 
@@ -37,7 +38,8 @@ namespace Domain.Models
 
             // Primary Key
             builder.HasKey(e => e.Id);
-
+            builder.Property(x => x.IsDeleted).HasDefaultValue(false);
+    
             // Properties
             builder.Property(e => e.OperationName)
                 .IsRequired()
