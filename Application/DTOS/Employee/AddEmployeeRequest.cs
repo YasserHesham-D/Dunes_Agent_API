@@ -29,7 +29,6 @@ namespace Application.Dtos.Employee
 
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
-        public IFormFile? Image { get; set; } 
 
         public ICollection<PermissionDto>? Permissions { get; set; } = new List<PermissionDto>();
     }

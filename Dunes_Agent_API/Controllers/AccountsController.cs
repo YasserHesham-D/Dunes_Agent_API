@@ -1,5 +1,4 @@
-﻿using Application.Dtos;
-using Application.Dtos.Employee;
+﻿using Application.Dtos.Employee;
 using Application.Dtos.Login;
 using Application.Services.AccountServices;
 using Domain.Models.Accounts;
@@ -7,12 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Presentation.Controllers
 {
@@ -33,8 +30,6 @@ namespace Presentation.Controllers
             if (user == null)
                 return Unauthorized("Invalid Email Or Password");
             
-
-           
             var passwordValid = await signInManager.CheckPasswordSignInAsync(
                 user,
                 requestDTO.Password,
@@ -52,6 +47,7 @@ namespace Presentation.Controllers
             var Tokens = await accountService.Login(user);
 
             return Ok(Tokens);
+
         }
 
         [HttpPost]
@@ -145,6 +141,7 @@ namespace Presentation.Controllers
 
             return Ok(Result);
         }
+
         [HttpPatch]
         [Route("[Action]/{id}")]
         public async Task<IActionResult> PatchEmployee(string id, [FromBody] UpdateEmployeeRequest request)

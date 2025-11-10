@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class IsDeletedINAllTablesImageRemovedFromEmployee : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,6 +38,38 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Permissions",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Module = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Action = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
+                    IsGranted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Permissions", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Expires = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Revoked = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -113,20 +145,20 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     JoinDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    SalaryType = table.Column<int>(type: "int", nullable: false),
                     IsFromUAE = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    HasControlSystemAccess = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     SalaryValue = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 0m),
+                    SalaryType = table.Column<int>(type: "int", nullable: false),
                     CommissionRate = table.Column<decimal>(type: "decimal(5,2)", nullable: false, defaultValue: 0m),
                     StaffVisaCount = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 0m),
-                    HotelId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    HotelId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EmployeeAddedId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -174,6 +206,7 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Name = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
                     EmployeeAddedId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -192,6 +225,7 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Name = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
                     PhoneNumber = table.Column<string>(type: "NVARCHAR(20)", maxLength: 20, nullable: false),
                     CarNumber = table.Column<string>(type: "NVARCHAR(20)", maxLength: 20, nullable: false),
@@ -207,6 +241,30 @@ namespace Infrastructure.Migrations
                         column: x => x.EmployeeAddedId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployeePermissions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PermissionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeePermissions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EmployeePermissions_AspNetUsers_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_EmployeePermissions_Permissions_PermissionId",
+                        column: x => x.PermissionId,
+                        principalTable: "Permissions",
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -233,6 +291,7 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Name = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
                     Place = table.Column<string>(type: "NVARCHAR(300)", maxLength: 300, nullable: false),
                     EntryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -253,10 +312,11 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Name = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
                     Place = table.Column<string>(type: "NVARCHAR(300)", maxLength: 300, nullable: false),
                     EntryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EmployeeAddedId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    EmployeeAddedId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -295,8 +355,9 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    EmployeeAddedId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    EmployeeAddedId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -313,8 +374,9 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    EmployeeAddedId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    EmployeeAddedId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -331,12 +393,13 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Duration = table.Column<int>(type: "int", nullable: false),
                     TimeDuration = table.Column<int>(type: "int", nullable: false),
                     EntryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    ServiceName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     EmployeeAddedId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -354,10 +417,11 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     CurrencyFromId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 0m),
                     CurrencyToId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EmployeeAddedId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    EmployeeAddedId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -384,7 +448,8 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EntryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     OperationName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Type = table.Column<int>(type: "int", maxLength: 100, nullable: false),
                     Value = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -418,10 +483,12 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Room = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Notes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    NumberOfRooms = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     IsConfirmed = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     GuestName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    AgentName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 0m),
                     CurrencyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PaymentMethodId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -453,6 +520,7 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BookingDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     GuestName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Room = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -514,6 +582,7 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     ServiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     KidsPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 0m),
@@ -540,6 +609,7 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     ServiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ReciptVoucherId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -576,6 +646,7 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     ServiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BookingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -727,9 +798,9 @@ namespace Infrastructure.Migrations
                 column: "EmployeeAddedId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CurrencyValues_CurrencyFromId_CurrencyToId_EmployeeAddedId",
+                name: "IX_CurrencyValues_CurrencyFromId",
                 table: "CurrencyValues",
-                columns: new[] { "CurrencyFromId", "CurrencyToId", "EmployeeAddedId" });
+                column: "CurrencyFromId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CurrencyValues_CurrencyToId",
@@ -745,6 +816,16 @@ namespace Infrastructure.Migrations
                 name: "IX_Drivers_EmployeeAddedId",
                 table: "Drivers",
                 column: "EmployeeAddedId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmployeePermissions_EmployeeId",
+                table: "EmployeePermissions",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmployeePermissions_PermissionId",
+                table: "EmployeePermissions",
+                column: "PermissionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_History_EmployeeId",
@@ -767,9 +848,9 @@ namespace Infrastructure.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LocationServices_ServiceId_LocationId",
+                name: "IX_LocationServices_ServiceId",
                 table: "LocationServices",
-                columns: new[] { "ServiceId", "LocationId" });
+                column: "ServiceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notifications_EmployeeId",
@@ -911,6 +992,9 @@ namespace Infrastructure.Migrations
                 name: "CurrencyValues");
 
             migrationBuilder.DropTable(
+                name: "EmployeePermissions");
+
+            migrationBuilder.DropTable(
                 name: "History");
 
             migrationBuilder.DropTable(
@@ -926,10 +1010,16 @@ namespace Infrastructure.Migrations
                 name: "ReciptVoucherServices");
 
             migrationBuilder.DropTable(
+                name: "RefreshTokens");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Bookings");
+
+            migrationBuilder.DropTable(
+                name: "Permissions");
 
             migrationBuilder.DropTable(
                 name: "ReciptVouchers");

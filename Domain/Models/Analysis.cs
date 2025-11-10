@@ -11,9 +11,9 @@ namespace Domain.Models
     public class Analysis
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public decimal NetProfit { get; set; }
-        public decimal TotalIncome { get; set; }
-        public decimal TotalOutcome { get; set; }
+        public decimal NetProfit { get; set; } // computed column income - outcome
+        public decimal TotalIncome { get; set; } // operation,booking,voucher  ++
+        public decimal TotalOutcome { get; set; } // operation --
         public DateTime LastUpdateDate { get; set; } = DateTime.UtcNow;
     }
     public class AnalysisConfigration : IEntityTypeConfiguration<Analysis>

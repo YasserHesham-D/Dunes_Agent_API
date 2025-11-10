@@ -14,13 +14,13 @@ namespace Domain.Models
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public DateTime BookingDate { get; set; } = DateTime.UtcNow;
+        public bool IsDeleted { get; set; } = false;
 
         public string PhoneNumber { get; set; } = null!;
         public string GuestName { get; set; } = null!;
        
 
         public string? Room { get; set; }
-
         public string? PickUpStatus { get; set; }
 
         public string? TicketNumber { get; set; }
@@ -74,6 +74,7 @@ namespace Domain.Models
 
             // Primary Key
             builder.HasKey(b => b.Id);
+            builder.Property(x => x.IsDeleted).HasDefaultValue(false);
 
             // Indexes (Optional but Recommended)
             builder.HasIndex(b => b.OrderNumber).IsUnique(false);

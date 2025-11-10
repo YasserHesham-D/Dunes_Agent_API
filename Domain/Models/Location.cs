@@ -13,6 +13,8 @@ namespace Domain.Models
     public class Location
     {
         public Guid Id { get; set; } = Guid.NewGuid();
+        public bool IsDeleted { get; set; } = false;
+
         public string Name { get; set; } = null!;
         public string Place {  get; set; } = null!;
 
@@ -39,6 +41,7 @@ namespace Domain.Models
             builder.ToTable("Locations");
 
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.IsDeleted).HasDefaultValue(false);
 
             builder.Property(e => e.Name).HasColumnType("NVARCHAR(100)").HasMaxLength(100);
 

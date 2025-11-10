@@ -14,6 +14,7 @@ namespace Domain.Models
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public DateTime Date { get; set; } = DateTime.UtcNow;
+        public bool IsDeleted { get; set; } = false;
 
         public string? Notes { get; set; }
 
@@ -45,6 +46,7 @@ namespace Domain.Models
 
             // Primary Key
             builder.HasKey(e => e.Id);
+            builder.Property(x => x.IsDeleted).HasDefaultValue(false);
 
             // Properties
             builder.Property(e => e.GuestName)
