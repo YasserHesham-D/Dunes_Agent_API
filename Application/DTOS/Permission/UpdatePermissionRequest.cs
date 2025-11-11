@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Application.Dtos.Permission
 {
-    public class AddPermissionRequest
+    public class UpdatePermissionRequest
     {
-        public string Module { get; set; } = null!; 
-        public string Action { get; set; } = null!;
+        public string? Module { get; set; } 
+        public string? Action { get; set; } 
     }
-
 }

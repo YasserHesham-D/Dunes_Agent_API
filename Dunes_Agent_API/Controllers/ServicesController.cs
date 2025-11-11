@@ -20,10 +20,8 @@ namespace Presentation.Controllers
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             
             var Result = await servicesService.AddNewServiceAsync(request,UserId);
-            if (!Result)
-                return StatusCode(500, "ServiceError");
-
-            return Ok("New Service Added Succesfully");
+               
+            return Ok(Result);
         }
 
         [HttpGet]
@@ -46,12 +44,8 @@ namespace Presentation.Controllers
         public async Task<IActionResult> DeleteService(Guid id)
         {
             var result = await servicesService.DeleteServiceAsync(id);
-            
-            if (!result)
-                return StatusCode(500, "Service Error");
 
-
-            return Ok("Service Deleted Succesfully");
+            return Ok(result);
         }
 
         [HttpPatch]
@@ -63,10 +57,9 @@ namespace Presentation.Controllers
 
             var result = await servicesService.PatchService(id, request);
 
-            if (!result)
-                return StatusCode(500, "Service Error");
 
-            return Ok("Service Updated Succesfully .");
+
+            return Ok(result);
         }
     }
 }

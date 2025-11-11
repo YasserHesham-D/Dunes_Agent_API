@@ -39,7 +39,7 @@ VALUES (
     'admin@example.com',
     'ADMIN@EXAMPLE.COM',
     1,                                      -- EmailConfirmed = true
-    'AQAAAAIAAYagAAAAEK/pvRj7wQb4p7mx6zA6PUbFAZb7h1rZcMJrTRXvm5e4h7ka3FzX3vJzlw9h2HT6Sw==', -- hashed 'Admin@123'
+    'AQAAAAIAAYagAAAAEB2ZYcbUO6BfuTNn2NGfmnRZ1OOTQyuqP2YGhiLeFHdZ1ECtixhn4RoN39Fa67Us7Q==', -- hashed 'Admin@123'
     NEWID(),
     NEWID(),
     0, 0, 0, 0,                             -- phone/twofactor/lockout defaults

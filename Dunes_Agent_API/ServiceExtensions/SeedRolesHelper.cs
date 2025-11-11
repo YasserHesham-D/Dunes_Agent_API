@@ -10,7 +10,7 @@ namespace Presentation.ServiceExtensions
             string[] roles = new[]
             {
                 RoleConstants.TourAgent,
-                RoleConstants.DiscAgent,
+                RoleConstants.DeskAgent,
                 RoleConstants.OperationManager,
                 RoleConstants.Admin
             };

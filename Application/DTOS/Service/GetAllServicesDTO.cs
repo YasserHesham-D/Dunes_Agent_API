@@ -14,10 +14,10 @@ namespace Application.Dtos.Service
         public int Duration { get; set; } 
         public string LocationName {  get; set; } = string.Empty;
 
-        public ICollection<Servicelocationdto> servicelocationdtos { get; set; }
+        public ICollection<ServicelocationDTO> servicelocations { get; set; }
 
     }
-    public class Servicelocationdto
+    public class ServicelocationDTO
     {
         public decimal Adult { get; set; }
         public decimal Kid { get; set; }
