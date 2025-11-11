@@ -1,6 +1,7 @@
 ﻿using Application.Dtos;
 using Application.Dtos.Employee;
 using Application.Dtos.Login;
+using Application.Dtos.Permission;
 using Domain.Interfaces.IModelsRepo;
 using Domain.Interfaces.IRepository;
 using Domain.Interfaces.IUnitOfWork;
@@ -111,9 +112,8 @@ namespace Application.Services.AccountServices
 
                 Permissions = request.Permissions.Select(x => new EmployeePermission
                 {
-                //    Module = x.Module,
-               //     Action = x.Action,
-                //    IsGranted = x.IsGranted
+                    IsGranted = true,
+                    PermissionId = x
 
                 }).ToList()
 
@@ -216,12 +216,10 @@ namespace Application.Services.AccountServices
                 Email = employee.Email,
                 HasControlOverSystem = employee.HasControlSystemAccess
 
-                ,Permissions = employee.Permissions.Select(x => new PermissionDto
-                {
-                 //   Action = x.Action,
-                 //   IsGranted = x.IsGranted,
-                  //  Module = x.Module,
-                }).ToList()
+                //,Permissions = employee.Permissions.Select(x => new GetAllPermissionsDTO
+                //{
+                   
+                //}).ToList()
             };
 
             return result;

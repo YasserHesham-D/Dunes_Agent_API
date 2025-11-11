@@ -9,7 +9,8 @@ namespace Domain.Interfaces.IModelsRepo
 {
     public interface IMTMRepo
     {
-        void DeleteServiceLocation(LocationServices locationServices);
+        Task<LocationServices> GetLocationServicesById(Guid Id);
+        Task AddLocationServices(LocationServices locationServices);
 
     }
 }

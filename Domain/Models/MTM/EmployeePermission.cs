@@ -13,8 +13,9 @@ namespace Domain.Models.MTM
     public class EmployeePermission
     {
         public Guid Id { get; set; } = Guid.NewGuid();
+
         public bool IsDeleted { get; set; } = false;
-        
+        public bool IsGranted { get; set; } = false; // true,false
 
         public string? EmployeeId { get; set; }
         public virtual Employee? Employee { get; set; }
@@ -29,7 +30,7 @@ namespace Domain.Models.MTM
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.IsDeleted).HasDefaultValue(false);
-
+            builder.Property(x => x.IsGranted).HasDefaultValue(false);
 
             builder.HasOne(x =>x.Employee)
                 .WithMany(x => x.Permissions)

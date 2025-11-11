@@ -23,7 +23,7 @@ namespace Application.Dtos.Employee
         public bool HasControlOverSystem { get; set; }
         public decimal staffVisaCount { get; set; }
 
-        public ICollection<PermissionDto>? Permissions { get; set; } = new List<PermissionDto>();
+       // public ICollection<PermissionDto>? Permissions { get; set; } = new List<PermissionDto>();
 
 
     }

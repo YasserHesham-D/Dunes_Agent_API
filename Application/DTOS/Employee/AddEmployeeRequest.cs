@@ -25,17 +25,12 @@ namespace Application.Dtos.Employee
         public bool HasControlSystemAccess { get; set; }
 
         public Guid AreaOfLocationId { get; set; }
-        public Guid HotelId { get; set; } 
+        public Guid? HotelId { get; set; } 
 
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
 
-        public ICollection<PermissionDto>? Permissions { get; set; } = new List<PermissionDto>();
+        public ICollection<Guid>? Permissions { get; set; } 
     }
-    public class PermissionDto
-    {
-        public string Module { get; set; } = string.Empty;
-        public string Action { get; set; } = string.Empty;
-        public bool IsGranted { get; set; }
-    }
+
 }

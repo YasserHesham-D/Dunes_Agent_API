@@ -17,9 +17,8 @@ namespace Domain.Models
 
         public string Module { get; set; } = null!;  // booking , employee , service , recipt voucher
         public string Action { get; set; } = null!;  // show add , edit , delete
-        public bool IsGranted { get; set; } = false; // true,false
 
-        public ICollection<EmployeePermission>? employees { get; set; } = new List<EmployeePermission>();
+        public ICollection<EmployeePermission>? employees { get; set; } 
     }
     public class EmployeeConfigration : IEntityTypeConfiguration<Permission>
     {
@@ -34,9 +33,6 @@ namespace Domain.Models
 
             builder.Property(x => x.Action)
                 .IsRequired().HasMaxLength(80);
-
-            builder.Property(x=> x.IsGranted)
-                .IsRequired().HasDefaultValue(false);
 
             builder.HasMany(x => x.employees).WithOne(x => x.permission);
         }

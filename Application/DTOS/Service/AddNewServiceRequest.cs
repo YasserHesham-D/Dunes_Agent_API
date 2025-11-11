@@ -1,6 +1,7 @@
 ﻿using Domain.Enums;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ namespace Application.Dtos.Service
         public string ServiceName { get; set; } = null!;
         public string ServiceDescription { get; set; } = null!;
         public TimeDuration TimeDuration { get; set; }
+        [AllowNull]
+        public string type { get; set; } 
 
         public ICollection<LocationServiceDTO> locationServices { get; set; }
 
