@@ -12,8 +12,10 @@ namespace Domain.Models
 {
     public class ReciptVoucher
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+
+        public int Id { get; set; } 
         public DateTime Date { get; set; } = DateTime.UtcNow;
+        public DateTime PickupDate { get; set; }
         public bool IsDeleted { get; set; } = false;
 
         public string? Notes { get; set; }
@@ -45,7 +47,7 @@ namespace Domain.Models
             builder.ToTable("ReciptVouchers");
 
             // Primary Key
-            builder.HasKey(e => e.Id);
+            builder.Property(x =>x.Id).IsRequired();
             builder.Property(x => x.IsDeleted).HasDefaultValue(false);
 
             // Properties
@@ -70,8 +72,10 @@ namespace Domain.Models
             builder.Property(e => e.Date)
                 .IsRequired();
 
+            builder.Property(e => e.PickupDate)
+                .IsRequired();
 
-          
+
 
 
 

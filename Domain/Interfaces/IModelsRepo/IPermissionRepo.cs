@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.IModelsRepo
 {
-    public interface IReceiptVoucherRepo : IRepo<ReciptVoucher>
+    public interface IPermissionRepo : IRepo<Permission>
     {
-        Task<ReciptVoucher> GetById(int id);
     }
 }

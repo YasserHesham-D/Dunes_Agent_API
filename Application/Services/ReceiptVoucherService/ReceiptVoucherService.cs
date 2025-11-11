@@ -39,6 +39,7 @@ namespace Application.Services.ReceiptVoucher
                 GuestName = request.GuestName,
                 AgentName = request.AgentName,
                 NumberOfRooms = request.NumOfRooms,
+                PickupDate = request.PickupDate,
                 Notes = request.Note,
                 CurrencyId = request.Currency,
                 PaymentMethodId = request.PaymentMethod,
@@ -127,6 +128,7 @@ namespace Application.Services.ReceiptVoucher
                 Id = x.Id,
                 GuestName = x.GuestName,
                 AgentName = x.AgentName,
+                pickupDate = x.PickupDate,
                 NumOfRooms = x.NumberOfRooms,
                 Note = x.Notes,
                 CurrencyName = x.Currency.Name,
@@ -148,7 +150,7 @@ namespace Application.Services.ReceiptVoucher
             return paginated;
         }
 
-        public async Task<GetAllReceiptVoucherDTO?> GetByIdAsync(Guid id)
+        public async Task<GetAllReceiptVoucherDTO?> GetByIdAsync(int id)
         {
             var voucher = await receiptVoucherRepo.GetAll()
                 .Include(x => x.Currency)
@@ -163,6 +165,7 @@ namespace Application.Services.ReceiptVoucher
                 Id = voucher.Id,
                 GuestName = voucher.GuestName,
                 AgentName = voucher.AgentName,
+                pickupDate = voucher.PickupDate,
                 NumOfRooms = voucher.NumberOfRooms,
                 Note = voucher.Notes,
                 CurrencyName = voucher.Currency.Name,
@@ -182,9 +185,9 @@ namespace Application.Services.ReceiptVoucher
             
         }
 
-        public async Task<bool> PatchAsync(Guid id, UpdateReceiptVoucherRequest request)
+        public async Task<bool> PatchAsync(int id, UpdateReceiptVoucherRequest request)
         {
-            var voucher = await receiptVoucherRepo.GetByIdAsync(id);
+            var voucher = await receiptVoucherRepo.GetById(id);
             if (voucher == null)
                 return false;
 
@@ -199,6 +202,9 @@ namespace Application.Services.ReceiptVoucher
 
             if (!string.IsNullOrEmpty(request.Note))
                 voucher.Notes = request.Note;
+
+            if (!string.IsNullOrEmpty(request.PickupDate.ToString()))
+                voucher.PickupDate = request.PickupDate;
 
             if (request.CurrencyId.HasValue)
                 voucher.CurrencyId = request.CurrencyId.Value;

@@ -16,7 +16,7 @@ namespace Application.Services.ReceiptVoucher
             string sortColumn = "CreatedAt", bool isAscending = false,
             int page = 1, int pageSize = 6);
 
-        Task<GetAllReceiptVoucherDTO?> GetByIdAsync(Guid id);
-        Task<bool> PatchAsync(Guid id, UpdateReceiptVoucherRequest request);
+        Task<GetAllReceiptVoucherDTO?> GetByIdAsync(int id);
+        Task<bool> PatchAsync(int id, UpdateReceiptVoucherRequest request);
     }
 }

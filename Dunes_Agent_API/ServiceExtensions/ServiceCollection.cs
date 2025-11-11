@@ -16,6 +16,7 @@ using Infrastructure.UnitOfWork;
 using Presentation.Hubs;
 using Application.Services.CurrencyValuesService;
 using Application.Services.DriverService;
+using Application.Services.PermissionService;
 
 namespace Presentation.ServiceExtensions
 {
@@ -60,6 +61,9 @@ namespace Presentation.ServiceExtensions
 
             services.AddScoped<IDriverRepo, DriverRepo>();
             services.AddScoped<IDriverService, DriverService>();
+
+            services.AddScoped<IPermissionRepo, PermissionRepo>();
+            services.AddScoped<IPermissionServices,PermissionService>();
 
 
             services.AddScoped<IRealTimeNotificationService, RealTimeNotificationService>();

@@ -14,7 +14,7 @@ namespace Domain.Models
         public Guid Id { get; set; } = Guid.NewGuid();
 
         public string ProcessName { get; set; } = null!;
-        public Guid ProcessId { get; set; }
+        public int ProcessId { get; set; }
         
         public DateTime CreatedAt { get; set; }= DateTime.Now;
         public bool IsRead { get; set; } 

@@ -29,7 +29,7 @@ namespace Presentation.Controllers
 
         [HttpPatch]
         [Route("[Action]/{id}")]
-        public async Task<IActionResult> UpdateReceiptVoucher(Guid id , UpdateReceiptVoucherRequest request)
+        public async Task<IActionResult> UpdateReceiptVoucher(int id , UpdateReceiptVoucherRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest("Invalid Request");
@@ -57,7 +57,7 @@ namespace Presentation.Controllers
 
         [HttpGet]
         [Route("[Action]/{id}")]
-        public async Task<IActionResult> GetReceiptVoucherById(Guid id)
+        public async Task<IActionResult> GetReceiptVoucherById(int id)
         {
             var voucher = await receiptVoucherService.GetByIdAsync(id);
 

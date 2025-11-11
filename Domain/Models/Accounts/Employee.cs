@@ -30,15 +30,15 @@ namespace Domain.Models.Accounts
         public decimal CommissionRate { get; set; } 
         public decimal StaffVisaCount { get; set; } = 0;
 
-        public Guid HotelId { get; set; }
-        public virtual Hotel Hotel { get; set; } = null!;
+        public Guid? HotelId { get; set; }
+        public virtual Hotel Hotel { get; set; } 
 
-        public string EmployeeAddedId { get; set; } = null!;
+        public string? EmployeeAddedId { get; set; }
 
-        public virtual Employee EmployeeAdd { get; set; } = null!;   
+        public virtual Employee EmployeeAdd { get; set; }
         
-        public Guid LocationId { get; set; }
-        public virtual Location Location { get; set; } = null!;
+        public Guid? LocationId { get; set; }
+        public virtual Location Location { get; set; } 
 
         public ICollection<Employee>? EmployeesAdded { get; set; }
         public ICollection<Hotel>? HotelsAdded { get; set; }

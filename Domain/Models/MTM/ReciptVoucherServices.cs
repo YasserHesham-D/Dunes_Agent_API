@@ -19,7 +19,7 @@ namespace Domain.Models.MTM
         public Guid LocationId { get; set; }
         public virtual Location Location { get; set; } = null!;
 
-        public Guid ReciptVoucherId { get; set; }
+        public int ReciptVoucherId { get; set; }
         public virtual ReciptVoucher Voucher { get; set; } = null!;
 
         public int KidsCount { get; set; }

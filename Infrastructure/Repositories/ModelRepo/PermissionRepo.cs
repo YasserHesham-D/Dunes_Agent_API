@@ -2,7 +2,6 @@
 using Domain.Models;
 using Infrastructure.DBContext;
 using Infrastructure.Repository;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,20 +11,14 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.ModelRepo
 {
-    public class ReceiptVoucherRepo : Repository<ReciptVoucher>, IReceiptVoucherRepo
+    public class PermissionRepo : Repository<Permission>, IPermissionRepo
     {
         private readonly AppDbContext context;
-        private readonly ILogger<ReciptVoucher> logger;
-
-        public ReceiptVoucherRepo(AppDbContext context, ILogger<ReciptVoucher> logger) : base(context, logger)
+        private readonly ILogger logger;
+        public PermissionRepo(AppDbContext context, ILogger<Permission> logger) : base(context, logger)
         {
             this.context = context;
             this.logger = logger;
-        }
-
-        public async Task<ReciptVoucher> GetById(int id)
-        {
-            return await context.ReciptVouchers.FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }
