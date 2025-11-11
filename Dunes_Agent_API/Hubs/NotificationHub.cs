@@ -1,16 +1,29 @@
 ﻿using Application.Services.NotificationService;
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
+using static Presentation.Hubs.RealTimeNotificationService;
 
 namespace Presentation.Hubs
 {
-    public class NotificationHub : Hub
+    public class RealTimeNotificationService(IHubContext<NotificationHub> _hubContext) : IRealTimeNotificationService
     {
-        public async Task SendNotification(string message)
+
+        public async Task SendNotificationToRolesAsync(IEnumerable<string> roles, object notificationPayload)
         {
-            await Clients.All.SendAsync("ReceiveNotification", message);
+            await _hubContext.Clients.Groups(roles)
+            .SendAsync("ReceiveNotification", notificationPayload);
         }
 
+        public async Task SendNotificationToUserAsync(string employeeId, object notification)
+        {
+            // We assume clients join groups using their EmployeeId
+            await _hubContext.Clients.Group(employeeId).SendAsync("ReceiveNotification", notification);
+        }
+
+    }
+
+    public class NotificationHub : Hub
+    {
         public override async Task OnConnectedAsync()
         {
             var employeeId = Context.User?.FindFirst("EmployeeId")?.Value;
@@ -35,20 +48,6 @@ namespace Presentation.Hubs
         }
 
     }
-    public class RealTimeNotificationService(IHubContext<NotificationHub> _hubContext) : IRealTimeNotificationService
-    {
-
-
-        public async Task SendNotificationToRolesAsync(IEnumerable<string> roles, object notificationPayload)
-        {
-            await _hubContext.Clients.Groups(roles)
-            .SendAsync("ReceiveNotification", notificationPayload);
-        }
-
-        public async Task SendNotificationToUserAsync(string employeeId, object notification)
-        {
-            // We assume clients join groups using their EmployeeId
-            await _hubContext.Clients.Group(employeeId).SendAsync("ReceiveNotification", notification);
-        }
-    }
+ 
+   
 }

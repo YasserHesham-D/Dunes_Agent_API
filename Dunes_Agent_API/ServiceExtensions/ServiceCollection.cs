@@ -2,12 +2,10 @@
 using Application.Services.CurrencyService;
 using Application.Services.HotelService;
 using Application.Services.LocationService;
-
 using Application.Services.NotificationService;
-using Application.Services.ReceiptVoucher;
-
 using Application.Services.PaymentMethodService;
 using Application.Services.PaymentStatusService;
+using Application.Services.ReceiptVoucher;
 using Application.Services.ServicesService;
 using Domain.Interfaces.IModelsRepo;
 using Domain.Interfaces.IRepository;
@@ -64,7 +62,7 @@ namespace Presentation.ServiceExtensions
             services.AddScoped<IDriverService, DriverService>();
 
 
-            services.AddScoped<IRealTimeNotificationService, Application.Services.NotificationService.RealTimeNotificationService>();
+            services.AddScoped<IRealTimeNotificationService, RealTimeNotificationService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<INotificationRepo, NotificationRepo>();
 

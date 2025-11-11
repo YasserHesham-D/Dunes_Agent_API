@@ -12,6 +12,7 @@ namespace Domain.Models.MTM
     public class CurrencyValues
     {
         public Guid Id { get; set; }= Guid.NewGuid();
+        public bool IsDeleted { get; set; } = false;
 
         public Guid CurrencyFromId { get; set; }
         public virtual Currency CurrencyFrom { get; set; } = null!;
@@ -34,12 +35,13 @@ namespace Domain.Models.MTM
 
             // Primary Key
             builder.HasKey(bs => bs.Id);
+            builder.Property(x => x.IsDeleted).HasDefaultValue(false);
 
             // Indexes (optional for performance)
-            builder.HasIndex(bs => new { bs.CurrencyFromId, bs.CurrencyToId, bs.EmployeeAddedId });
+            //   builder.HasIndex(bs => new { bs.CurrencyFromId, bs.CurrencyToId, bs.EmployeeAddedId });
 
             // Relationships ------------------------------
-
+            // In CurrencyValuesConfigration
 
             builder.HasOne(bs => bs.CurrencyFrom)
                 .WithMany(b => b.CurrenciesFrom)

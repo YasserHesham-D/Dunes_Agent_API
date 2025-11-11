@@ -34,9 +34,23 @@ namespace Application.Services.NotificationService
             await notificationRepo.MarkAsReadAsync(notificationId);
         }
 
-        public async Task<IEnumerable<Notification>> GetForEmployeeAsync(string employeeId)
+        public async Task<IEnumerable<NotificationDTO>> GetForEmployeeAsync(string employeeId)
         {
-            return await notificationRepo.GetForEmployeeAsync(employeeId);
+            var notifications = await notificationRepo.GetForEmployeeAsync(employeeId);
+
+
+            return notifications.Select(x => new NotificationDTO
+            {
+                EmployeeName = x.Employee.UserName,
+                Message = x.Message,
+                ProcessName = x.ProcessName
+            }).ToList();
         }
+    }
+    public class NotificationDTO
+    {
+        public string Message { get; set; }
+        public string ProcessName { get; set; }
+        public string EmployeeName { get; set; }
     }
 }

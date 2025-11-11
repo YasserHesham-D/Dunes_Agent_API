@@ -13,6 +13,7 @@ namespace Domain.Models
     public class Currency
     {
         public Guid Id { get; set; } = Guid.NewGuid();
+        public bool IsDeleted { get; set; } = false;
 
         public string Name { get; set; } = null!;
 
@@ -21,6 +22,7 @@ namespace Domain.Models
 
         public ICollection<CurrencyValues>? CurrenciesFrom { get; set; } = new List<CurrencyValues>();
         public ICollection<CurrencyValues>? CurrenciesTo { get; set; } = new List<CurrencyValues>();
+
         public ICollection<Operation>? Operations { get; set; } =  new List<Operation>();
         public ICollection<ReciptVoucher>? Vouchers { get; set; } = new List<ReciptVoucher>();
         public ICollection<Booking>? Bookings { get; set; } = new List<Booking>();
@@ -34,6 +36,7 @@ namespace Domain.Models
             builder.ToTable("Currencies");
 
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.IsDeleted).HasDefaultValue(false);
 
             builder.Property(e => e.Name).HasColumnType("NVARCHAR(50)").HasMaxLength(50);
 

@@ -12,6 +12,8 @@ namespace Domain.Models
     public class Driver
     {
         public Guid Id { get; set; } = Guid.NewGuid();
+        public bool IsDeleted { get; set; } = false;
+
         public string Name { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!;
         public string CarNumber { get; set; } = null!;
@@ -31,6 +33,7 @@ namespace Domain.Models
             builder.ToTable("Drivers");
 
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.IsDeleted).HasDefaultValue(false);
 
             builder.Property(e => e.Name).HasColumnType("NVARCHAR(100)").HasMaxLength(100);
 

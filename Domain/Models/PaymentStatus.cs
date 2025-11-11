@@ -11,12 +11,13 @@ namespace Domain.Models
 {
     public class PaymentStatus
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; }= Guid.NewGuid();
+        public bool IsDeleted { get; set; } = false;
+
         public string Name { get; set; } = null!;
         public string? EmployeeAddedId { get; set; }
 
         public virtual Employee? Employee { get; set; }
-
         public ICollection<Booking>? Bookings { get; set; }
     }
     public class PaymentStatusConfigration : IEntityTypeConfiguration<PaymentStatus>

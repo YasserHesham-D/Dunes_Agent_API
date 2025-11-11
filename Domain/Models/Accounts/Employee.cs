@@ -5,8 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain.Models.Accounts
@@ -16,7 +19,6 @@ namespace Domain.Models.Accounts
     {
         public DateTime JoinDate { get; set; }= DateTime.UtcNow;
 
-        public string? ImageUrl { get; set; }
 
         public bool IsFromUAE { get; set; }
         public bool HasControlSystemAccess { get; set; }
@@ -28,42 +30,30 @@ namespace Domain.Models.Accounts
         public decimal CommissionRate { get; set; } 
         public decimal StaffVisaCount { get; set; } = 0;
 
-        public Guid? HotelId { get; set; }
-        public virtual Hotel? Hotel { get; set; }
+        public Guid HotelId { get; set; }
+        public virtual Hotel Hotel { get; set; } = null!;
 
         public string EmployeeAddedId { get; set; } = null!;
+
         public virtual Employee EmployeeAdd { get; set; } = null!;   
         
-        public Guid? LocationId { get; set; }
-        public virtual Location? Location { get; set; }
+        public Guid LocationId { get; set; }
+        public virtual Location Location { get; set; } = null!;
 
         public ICollection<Employee>? EmployeesAdded { get; set; }
-
         public ICollection<Hotel>? HotelsAdded { get; set; }
-
         public ICollection<Location>? LocationsAdded { get; set; }
-
         public ICollection<Service>? ServicesAdded { get; set; }
-
         public ICollection<Currency>? CurrenciesAdded { get; set; }
-
         public ICollection<CurrencyValues>? CurrenciesValuesAdded { get; set; }
-
         public ICollection<Driver>? DriversAdded { get; set; }
-
         public ICollection<PaymentMethod>? PaymentMethodsAdded { get; set; }
 
         public ICollection<PaymentStatus>? PaymentStatusAdded { get; set; }
-
         public ICollection<History>? History { get; set; }
-
-
         public ICollection<Notification>? Notifications { get; set; }
-
         public ICollection<Operation>? Operations { get; set; }
-
         public ICollection<ReciptVoucher>? Vouchers { get; set; }
-
         public ICollection<Booking>? Bookings { get; set; }
 
 
@@ -74,7 +64,7 @@ namespace Domain.Models.Accounts
     {
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
-            builder.ToTable("Employees");
+            builder.ToTable("Employee");
 
             // Primary Key
             builder.HasKey(e => e.Id);
@@ -115,6 +105,7 @@ namespace Domain.Models.Accounts
             // Relationships --------------------------------
 
             // Self reference: EmployeeAdded -> EmployeesAdded
+
             builder.HasOne(e => e.EmployeeAdd)
                 .WithMany(e => e.EmployeesAdded)
                 .HasForeignKey(e => e.EmployeeAddedId)
@@ -125,6 +116,7 @@ namespace Domain.Models.Accounts
                 .WithMany(h => h.EmployeesBelong)
                 .HasForeignKey(e => e.HotelId)
                 .OnDelete(DeleteBehavior.NoAction);
+
 
             // Location relationship
             builder.HasOne(e => e.Location)

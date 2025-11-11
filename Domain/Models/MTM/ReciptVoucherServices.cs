@@ -11,6 +11,7 @@ namespace Domain.Models.MTM
     public class ReciptVoucherServices
     {
         public Guid Id { get; set; } = Guid.NewGuid();
+        public bool IsDeleted { get; set; } = false;
 
         public Guid ServiceId { get; set; }
         public virtual Service Service { get; set; } = null!;
@@ -38,6 +39,7 @@ namespace Domain.Models.MTM
 
             // Primary Key
             builder.HasKey(bs => bs.Id);
+            builder.Property(x => x.IsDeleted).HasDefaultValue(false);
 
             // Indexes (optional for performance)
             builder.HasIndex(bs => new { bs.ReciptVoucherId, bs.ServiceId, bs.LocationId });

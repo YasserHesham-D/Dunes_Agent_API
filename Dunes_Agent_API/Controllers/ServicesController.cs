@@ -18,8 +18,6 @@ namespace Presentation.Controllers
             if(!ModelState.IsValid)
                 return BadRequest("Invalid Request");
             var UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            
             
             var Result = await servicesService.AddNewServiceAsync(request,UserId);
             if (!Result)
