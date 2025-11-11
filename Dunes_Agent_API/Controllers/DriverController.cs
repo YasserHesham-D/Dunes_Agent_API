@@ -112,7 +112,7 @@ namespace Presentation.Controllers
         [Route("[Action]/{Id}")]
         //[Authorize(Roles="Admin,OpreationManager")]
 
-        public async Task<IActionResult> GetHotelDetails(Guid Id)
+        public async Task<IActionResult> GetDriverDetails(Guid Id)
         {
             var existeddriver = await driverService.GetDriverDetails(Id);
 
