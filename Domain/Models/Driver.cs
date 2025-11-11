@@ -30,7 +30,7 @@ namespace Domain.Models
     {
         public void Configure(EntityTypeBuilder<Driver> builder)
         {
-            builder.ToTable("Drivers");
+            builder.ToTable("Driver");
 
             builder.HasKey(x => x.Id);
             builder.Property(x => x.IsDeleted).HasDefaultValue(false);

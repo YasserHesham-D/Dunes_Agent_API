@@ -16,8 +16,8 @@ namespace Domain.Models
         public bool IsDeleted { get; set; } = false;
 
         public string Module { get; set; } = null!;  // booking , employee , service , recipt voucher
-        public string Action { get; set; } = null!; // show add , edit , delete
-        public bool IsGranted { get; set; } = false;// true,false
+        public string Action { get; set; } = null!;  // show add , edit , delete
+        public bool IsGranted { get; set; } = false; // true,false
 
         public ICollection<EmployeePermission>? employees { get; set; } = new List<EmployeePermission>();
     }

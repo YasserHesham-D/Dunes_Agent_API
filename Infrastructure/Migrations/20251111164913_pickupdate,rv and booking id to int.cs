@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class IsDeletedINAllTablesImageRemovedFromEmployee : Migration
+    public partial class pickupdatervandbookingidtoint : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -221,7 +221,7 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Drivers",
+                name: "Driver",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -231,13 +231,13 @@ namespace Infrastructure.Migrations
                     CarNumber = table.Column<string>(type: "NVARCHAR(20)", maxLength: 20, nullable: false),
                     PlaceOfWork = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
                     DateOfAdd = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EmployeeAddedId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    EmployeeAddedId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Drivers", x => x.Id);
+                    table.PrimaryKey("PK_Driver", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Drivers_AspNetUsers_EmployeeAddedId",
+                        name: "FK_Driver_AspNetUsers_EmployeeAddedId",
                         column: x => x.EmployeeAddedId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
@@ -334,7 +334,7 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProcessName = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
-                    ProcessId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProcessId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsRead = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Message = table.Column<string>(type: "NVARCHAR(300)", maxLength: 300, nullable: false),
@@ -481,8 +481,10 @@ namespace Infrastructure.Migrations
                 name: "ReciptVouchers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PickupDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Notes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     NumberOfRooms = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
@@ -518,8 +520,9 @@ namespace Infrastructure.Migrations
                 name: "Bookings",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BookingDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BookingEntryDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     GuestName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
@@ -556,9 +559,9 @@ namespace Infrastructure.Migrations
                         principalTable: "Currencies",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Bookings_Drivers_DriverId",
+                        name: "FK_Bookings_Driver_DriverId",
                         column: x => x.DriverId,
-                        principalTable: "Drivers",
+                        principalTable: "Driver",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Bookings_Hotels_HotelId",
@@ -612,7 +615,7 @@ namespace Infrastructure.Migrations
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     ServiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReciptVoucherId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReciptVoucherId = table.Column<int>(type: "int", nullable: false),
                     KidsCount = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     KidsTotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 0m),
                     ChildsCount = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
@@ -649,7 +652,7 @@ namespace Infrastructure.Migrations
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     ServiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BookingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BookingId = table.Column<int>(type: "int", nullable: false),
                     KidsCount = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     KidsTotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 0m),
                     ChildsCount = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
@@ -813,8 +816,8 @@ namespace Infrastructure.Migrations
                 column: "EmployeeAddedId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Drivers_EmployeeAddedId",
-                table: "Drivers",
+                name: "IX_Driver_EmployeeAddedId",
+                table: "Driver",
                 column: "EmployeeAddedId");
 
             migrationBuilder.CreateIndex(
@@ -1028,7 +1031,7 @@ namespace Infrastructure.Migrations
                 name: "Services");
 
             migrationBuilder.DropTable(
-                name: "Drivers");
+                name: "Driver");
 
             migrationBuilder.DropTable(
                 name: "PaymentStatuses");

@@ -268,8 +268,6 @@ namespace Application.Services.CurrencyService
 
             return paginatedcurrencies;
         }
-
-
         public async Task<GetPaymentStatusandMethodDetailsDTO> GetCurrencyDetails(Guid Id)
         {
             var existedCurrency = currencyRepo.GetAll().AsNoTracking().Where(x => x.Id==Id);

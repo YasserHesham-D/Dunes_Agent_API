@@ -14,6 +14,7 @@ namespace Application.Dtos.ReceiptVoucher
         public string GuestName { get; set; } = null!;
         public string AgentName { get; set; } = null!;
         public string NumOfRooms { get; set; } = null!;
+        public DateTime PickupDate { get; set; }
         public string? Note { get; set; }
         public Guid Currency {  get; set; }
         public Guid PaymentMethod { get; set; } 

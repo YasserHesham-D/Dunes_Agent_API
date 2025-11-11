@@ -21,7 +21,7 @@ namespace Presentation.Controllers
         [HttpPost]
         [Route("[Action]")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] LoginRequestDTO requestDTO)   // admin123 @dunes.com , Admin@123 // yasserhesham360   123123#Dd deskAgent
+        public async Task<IActionResult> Login([FromBody] LoginRequestDTO requestDTO)   // admin@example.com , Admin@123 // yasserhesham360   123123#Dd deskAgent
         {
             if (!ModelState.IsValid)
                 return BadRequest("Invalid Request");
@@ -107,9 +107,6 @@ namespace Presentation.Controllers
 
             if (!Result)
                 return StatusCode(500, "Service Error");
-
-
-
 
             return Ok("Employee Added Succesfully");
         }

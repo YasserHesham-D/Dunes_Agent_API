@@ -18,18 +18,6 @@ namespace Presentation.Controllers
         [Route("[Action]")]
         public async Task<IActionResult> AddNewCurrency([FromBody] AddNewCurrencyRequest request)
         {
-            //if (!ModelState.IsValid)
-            //    return BadRequest("Invalid Request");
-
-            //var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            
-            //var result = await currencyService.AddNewCurrency(userId,request);
-
-            //if (!result)
-            //    return StatusCode(500, "Service Error");
-
-            //return Ok("New Currency Added Succesfully .");
-
 
             if (request == null)
             {
@@ -158,7 +146,6 @@ namespace Presentation.Controllers
 
         [HttpGet]
         [Route("[Action]")]
-
         public async Task<IActionResult> GetCurrencyVouchersCountPaginated(int Page = 1, int PageSize = 20)
         {
             var CurrencyVouchers = await currencyService.GetCurrencyVouchersCount(Page, PageSize);
@@ -174,7 +161,6 @@ namespace Presentation.Controllers
 
         [HttpGet]
         [Route("[Action]")]
-
         public async Task<IActionResult> GetCurrencyOpreationsCountPaginated(int Page = 1, int PageSize = 20)
         {
             var CurrencyOpreations = await currencyService.GetCurrencyOpreationsCount(Page, PageSize);

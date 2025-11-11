@@ -9,10 +9,11 @@ namespace Application.Dtos.ReceiptVoucher
 
     public class GetAllReceiptVoucherDTO
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string GuestName { get; set; } = null!;
         public string AgentName { get; set; } = null!;
         public string NumOfRooms { get; set; } = null!;
+        public DateTime pickupDate { get; set; }
         public string? Note { get; set; }
         public string CurrencyName { get; set; } = null!;
         public string PaymentMethodName { get; set; } = null!;

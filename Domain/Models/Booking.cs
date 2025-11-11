@@ -12,8 +12,10 @@ namespace Domain.Models
 {
     public class Booking
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public DateTime BookingDate { get; set; } = DateTime.UtcNow;
+        public int Id { get; set; } 
+        public DateTime BookingEntryDate { get; set; } = DateTime.UtcNow;
+        
+        
         public bool IsDeleted { get; set; } = false;
 
         public string PhoneNumber { get; set; } = null!;
@@ -73,7 +75,7 @@ namespace Domain.Models
             builder.ToTable("Bookings");
 
             // Primary Key
-            builder.HasKey(b => b.Id);
+            builder.Property(b => b.Id).IsRequired();
             builder.Property(x => x.IsDeleted).HasDefaultValue(false);
 
             // Indexes (Optional but Recommended)
@@ -129,7 +131,7 @@ namespace Domain.Models
             builder.Property(b => b.IsConfirmed)
                 .HasDefaultValue(false);
 
-            builder.Property(b => b.BookingDate)
+            builder.Property(b => b.BookingEntryDate)
                 .HasDefaultValueSql("GETUTCDATE()");
 
             builder.Property(b => b.PickUpDate)
