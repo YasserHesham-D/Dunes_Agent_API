@@ -17,6 +17,7 @@ using Infrastructure.Repository;
 using Infrastructure.UnitOfWork;
 using Presentation.Hubs;
 using Application.Services.CurrencyValuesService;
+using Application.Services.DriverService;
 
 namespace Presentation.ServiceExtensions
 {
@@ -58,6 +59,9 @@ namespace Presentation.ServiceExtensions
 
             services.AddScoped<IReceiptVoucherRepo, ReceiptVoucherRepo>();
             services.AddScoped<IReceiptVoucherService, ReceiptVoucherService>();
+
+            services.AddScoped<IDriverRepo, DriverRepo>();
+            services.AddScoped<IDriverService, DriverService>();
 
 
             services.AddScoped<IRealTimeNotificationService, Application.Services.NotificationService.RealTimeNotificationService>();

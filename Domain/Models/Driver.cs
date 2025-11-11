@@ -17,9 +17,9 @@ namespace Domain.Models
         public string CarNumber { get; set; } = null!;
         public string PlaceOfWork { get; set; } = null!;
         public DateTime DateOfAdd { get; set; }= DateTime.UtcNow;
-        public string EmployeeAddedId { get; set; } = null!;
+        public string? EmployeeAddedId { get; set; } = null!;
 
-        public virtual Employee Employee { get; set; } = null!;
+        public virtual Employee? Employee { get; set; } = null!;
 
         public ICollection<Booking>? Bookings { get; set; }
 
