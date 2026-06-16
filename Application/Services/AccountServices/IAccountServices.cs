@@ -15,7 +15,6 @@ namespace Application.Services.AccountServices
         Task<LoginResponseDTO> Login(Employee employee);
         Task<(string Token, RefreshToken RefreshToken)> RefreshTokenAsync(string token);
         Task LogoutAsync(string userId);
-
         Task<bool> AddNewEmployee(AddEmployeeRequest request, string EmployeeAddedId);
         public Task<Pagination<GetAllEmployees>> GetAllEmployeesAsync(
             string? fullname,
