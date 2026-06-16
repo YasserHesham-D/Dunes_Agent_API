@@ -1,0 +1,11 @@
+Project Purpose
+Dunes Agent API is a back-office management system for a UAE-based tourism/travel agency. It powers an internal control panel where employees (with different roles like Admin, OperationManager, DeskAgent, TourAgent) manage:
+
+🎫 Guest bookings — with drivers, hotels, services, pricing, VAT, discounts
+🧾 Receipt vouchers — service-based invoices for guests
+💰 Financial operations — tracking income/outcome with analysis dashboards
+🏨 Hotels, Locations, Drivers — operational resource management
+💱 Multi-currency support — with exchange rates
+👥 Employee management — with salary, commission, visa tracking
+🔔 Real-time notifications — via SignalR
+🔐 JWT authentication — with token blacklisting and role-based + granular permission access control
