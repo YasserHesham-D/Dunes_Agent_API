@@ -1,3 +1,4 @@
+
 # Dunes Agent API — Full Codebase Documentation
 
 ## 1. Project Purpose & Overview
@@ -599,9 +600,3 @@ Dunes_Agent_API/
 | **EF Core Fluent Configuration** | Entity configs co-located with models, auto-discovered via assembly scanning |
 | **Dynamic Sorting** | Reflection-based `OrderBy` allows client-specified sort columns |
 | **Multiple connection strings** | Support for multiple developer environments and a remote staging/production DB |
-
-> [!WARNING]
-> **Security Note**: The `appsettings.json` file contains hardcoded connection strings with passwords and a JWT signing key. These should be moved to environment variables, user secrets, or a vault in production.
-
-> [!NOTE]
-> The `Validators/` folder is empty — FluentValidation is referenced but no validators are currently implemented. This is a good area for future improvement.

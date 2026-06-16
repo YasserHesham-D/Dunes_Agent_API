@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class pickupdatervandbookingidtoint : Migration
+    public partial class somee3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -153,9 +153,9 @@ namespace Infrastructure.Migrations
                     SalaryType = table.Column<int>(type: "int", nullable: false),
                     CommissionRate = table.Column<decimal>(type: "decimal(5,2)", nullable: false, defaultValue: 0m),
                     StaffVisaCount = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 0m),
-                    HotelId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EmployeeAddedId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    HotelId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    EmployeeAddedId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
